@@ -5,7 +5,7 @@
 # @author: Aruan
 # @email: ruanhp1@lenovo.com
 # @update: '2017/7/17'
-# @description: 
+# @description:
 
 
 class Test(object):
@@ -15,7 +15,3 @@ class Test(object):
 
 if __name__ == "__main__":
     pass
-    import re
-    a = u'䂶'
-    re_chinese = re.compile(u'[\u4e00-\u9fa5]')
-    print re_chinese.search(a)

@@ -8,9 +8,10 @@
 
 import time
 import datetime
+from functools import wraps
 
 
-class TimeHelper():
+class TimeHelper(object):
     def __init__(self):
         pass
 
@@ -57,7 +58,18 @@ class TimeHelper():
             return result
         return datetime.datetime.utcfromtimestamp(long(input_string) / 1000).strftime("%Y-%m-%d %H:%M:%S")
 
+    # Decorator for test runing time: @TimeHelper.fn_timer
+    @staticmethod
+    def fn_timer(func):
+        @wraps(func)
+        def function_timer(*args, **kwargs):
+            time_begin = time.time()
+            result = func(*args, **kwargs)
+            time_end = time.time()
+            print ("Total time of running %s: %s seconds" %(func.func_name, str(time_end - time_begin)))
+            return result
+        return function_timer
+
 
 if __name__ == "__main__":
     pass
-
