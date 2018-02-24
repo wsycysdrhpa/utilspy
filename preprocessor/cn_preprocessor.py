@@ -6,16 +6,18 @@
 
 
 import re
+import codecs
 
 import jieba
 
 
-class ChinesePreprocessor(object):
+class CnPreprocessor(object):
     """
     中文预处理
     """
     def __init__(self):
         pass
+        jieba.set_dictionary()
 
     def seg_file_sent(self, row_file, seged_file, hmm=True):
         """
@@ -151,8 +153,8 @@ class ChinesePreprocessor(object):
 
 if __name__ == "__main__":
     pass
-    chinese_preprocessor = ChinesePreprocessor()
+    cn_preprocessor = CnPreprocessor()
     # test_uni_sent = u"这个非常好，可以'QUchu'所有的非中文标记！！!!"
-    # print chinese_preprocessor.repl_non_chinese_characters(test_uni_sent)
-    # chinese_preprocessor.del_file_stop_word('data/test/test_stop_word.txt', 'data/test/test_in.txt', 'data/test/test_out.txt')
-    # chinese_preprocessor.seg_file_sent('data/test/test_in.txt', 'data/test/test_out.txt', userdict_file=False, hmm=False)
+    # print cn_preprocessor.repl_non_chinese_characters(test_uni_sent)
+    # cn_preprocessor.del_file_stop_word('data/test/test_stop_word.txt', 'data/test/cn_test_in.txt', 'data/test/cn_test_out.txt')
+    # cn_preprocessor.seg_file_sent('data/test/cn_test_in.txt', 'data/test/cn_test_out.txt', userdict_file=False, hmm=False)

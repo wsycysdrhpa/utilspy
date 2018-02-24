@@ -14,7 +14,7 @@ from mysql.connector import IntegrityError
 from mysql.connector.pooling import MySQLConnectionPool
 
 
-logger = logging.getLogger("dual")
+LOGGER = logging.getLogger("dual")
 
 
 class MySqlPoolHelper(object):
@@ -58,28 +58,28 @@ class MySqlPoolHelper(object):
             cursor.execute(sql, params)
             conn.commit()
         except ProgrammingError, e:
-            logger.error("执行sql失败：" + e.message + "\tsql=" + sql_info)
+            LOGGER.error("执行sql失败：" + e.message + "\tsql=" + sql_info)
         except IntegrityError, e:
-            logger.error("执行sql失败IntegrityError：" + e.message + "\tsql=" + sql_info)
+            LOGGER.error("执行sql失败IntegrityError：" + e.message + "\tsql=" + sql_info)
         except Exception, e:
-            logger.error("执行sql失败 未知错误：" + e.message + "\tsql=" + sql_info)
+            LOGGER.error("执行sql失败 未知错误：" + e.message + "\tsql=" + sql_info)
         cursor.close()
         conn.close()
 
     def execute_many(self, sql, params_list=None):
         if not params_list:
-            logger.error("paramsList is None")
+            LOGGER.error("paramsList is None")
         conn = self._pool.get_connection()
         cursor = conn.cursor()
         try:
             cursor.executemany(sql, params_list)
             conn.commit()
         except ProgrammingError, e:
-            logger.error("执行sql失败：" + e.message + str(params_list[0]))
+            LOGGER.error("执行sql失败：" + e.message + str(params_list[0]))
         except IntegrityError, e:
-            logger.error("执行sql失败IntegrityError：" + e.message + str(params_list[0]))
+            LOGGER.error("执行sql失败IntegrityError：" + e.message + str(params_list[0]))
         except Exception, e:
-            logger.error("执行sql失败 未知错误：" + e.message + str(params_list[0]))
+            LOGGER.error("执行sql失败 未知错误：" + e.message + str(params_list[0]))
         cursor.close()
         conn.close()
 

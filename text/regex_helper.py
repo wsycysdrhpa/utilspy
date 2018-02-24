@@ -6,9 +6,13 @@
 # @date: '14-7-11'
 
 
+import re
+
+
 class RegexHelper(object):
     def __init__(self):
-        pass
+        # 多个空格
+        self.re_muti_space = re.compile(u'\s+')
 
     @staticmethod
     def match_single(regex, source, match_result_group_name):

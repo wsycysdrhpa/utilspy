@@ -11,7 +11,7 @@ from _sqlite3 import ProgrammingError, IntegrityError
 
 import pyodbc
 
-logger = logging.getLogger("dual")
+LOGGER = logging.getLogger("dual")
 
 
 class OdbcHelper(object):
@@ -57,25 +57,25 @@ class OdbcHelper(object):
                 cursor.execute(sql)
             cursor.commit()
         except ProgrammingError, e:
-            logger.error("执行sql失败：" + e.message + "\tsql=" + sql_info)
+            LOGGER.error("执行sql失败：" + e.message + "\tsql=" + sql_info)
         except IntegrityError, e:
-            logger.error("执行sql失败IntegrityError：" + e.message + "\tsql=" + sql_info)
+            LOGGER.error("执行sql失败IntegrityError：" + e.message + "\tsql=" + sql_info)
         except Exception, e:
-            logger.error("执行sql失败 未知错误：" + e.message + "\tsql=" + sql_info)
+            LOGGER.error("执行sql失败 未知错误：" + e.message + "\tsql=" + sql_info)
 
     def execute_many(self, sql, params_list=None):
         if not params_list:
-            logger.error("params_list is None")
+            LOGGER.error("params_list is None")
         cursor = self._conn.cursor()
         try:
             cursor.executemany(sql, params_list)
             cursor.commit()
         except ProgrammingError, e:
-            logger.error("执行sql失败：" + e.message + str(params_list[0]))
+            LOGGER.error("执行sql失败：" + e.message + str(params_list[0]))
         except IntegrityError, e:
-            logger.error("执行sql失败IntegrityError：" + e.message + str(params_list[0]))
+            LOGGER.error("执行sql失败IntegrityError：" + e.message + str(params_list[0]))
         except Exception, e:
-            logger.error("执行sql失败 未知错误：" + e.message + str(params_list[0]))
+            LOGGER.error("执行sql失败 未知错误：" + e.message + str(params_list[0]))
 
     def close(self):
         self._conn.close()

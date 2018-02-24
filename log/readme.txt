@@ -1,16 +1,20 @@
-若使用默认的配置文件conf/logger.conf
-相对调用logger.warning()等方法的文件，需要先具有../log/的目录
-调用才可以输出到log/app.log中
+默认使用的配置文件为：conf/logger.conf
 
 调用方法：
+# 注册过程
+import os
 import logging
 
 from utilspy.log.logger import Logger
 
-Logger.load_configure()
+CURRENT_FILE_PATH = os.path.abspath(__file__)
+CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
 
+Logger.load_configure(CURRENT_DIR_PATH)
+
+# 使用过程
 # 只输出到屏幕
-logger = logging.getLogger()
+# logger = logging.getLogger()
 
 # 同时输出到屏幕和文件
 logger = logging.getLogger('dual')

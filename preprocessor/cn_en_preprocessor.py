@@ -14,13 +14,12 @@ import jieba
 
 CURRENT_FILE_PATH = os.path.abspath(__file__)
 CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
-PARENT_DIR_PATH = os.path.dirname(CURRENT_DIR_PATH)
 
 # Dict absoluate path
 SEG_DICT_FILE = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/lm_dict/words_for_seg.txt')
 
 
-class ChPreprocessor(object):
+class CnEnPreprocessor(object):
     def __init__(self, seg_dict=SEG_DICT_FILE):
         # Set user dict, use jieba dict
         # jieba.load_userdict(seg_dict)
@@ -63,4 +62,4 @@ class ChPreprocessor(object):
 
 if __name__ == "__main__":
     pass
-    ch_preprocessor = ChPreprocessor()
+    cn_en_preprocessor = CnEnPreprocessor()

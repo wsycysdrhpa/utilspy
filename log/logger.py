@@ -6,13 +6,13 @@
 
 
 import os
+from os.path import exists
 import logging
 import logging.config
 
 
 CURRENT_FILE_PATH = os.path.abspath(__file__)
 CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
-PARENT_DIR_PATH = os.path.dirname(CURRENT_DIR_PATH)
 
 # Dict absoluate path
 CONF_FILE = os.path.join(CURRENT_DIR_PATH, 'conf/logger.conf')
@@ -43,7 +43,10 @@ class Logger(object):
             return self._logger_dict[logger_name]
 
     @staticmethod
-    def load_configure(config_file=None):
+    def load_configure(prefix, config_file=None):
+        log_dir = os.path.join(prefix, 'log')
+        if not exists(log_dir):
+            os.mkdir(log_dir)
         if config_file:
             print config_file
             logging.config.fileConfig(config_file)
@@ -89,7 +92,7 @@ class Logger(object):
 
 if __name__ == "__main__":
     pass
-    Logger.load_configure()
+    Logger.load_configure(CURRENT_DIR_PATH)
 
     # 以下代码输出文件名字、行数等信息时有问题，都是：logger.py[line:44]
     # Logger.debug(u'hello', logger_name='dual')
@@ -98,8 +101,8 @@ if __name__ == "__main__":
     # Logger.error(u'hello', logger_name='dual')
     # Logger.critical(u'hello', logger_name='dual')
 
-    logger = logging.getLogger()
-    # logger = logging.getLogger('dual')
+    # logger = logging.getLogger()
+    logger = logging.getLogger('dual')
     logger.debug(u'hello')
     logger.info(u'hello')
     logger.warning(u'hello')

@@ -10,7 +10,7 @@ from _sqlite3 import ProgrammingError, IntegrityError
 
 import MySQLdb
 
-logger = logging.getLogger('dual')
+LOGGER = logging.getLogger('dual')
 
 
 class MySqlHelper(object):
@@ -96,30 +96,30 @@ class MySqlHelper(object):
             # 提交到数据库执行
             self._conn.commit()
         except ProgrammingError, e:
-            logger.error("执行sql失败：" + e.message + "\tsql=" + sql_info)
+            LOGGER.error("执行sql失败：" + e.message + "\tsql=" + sql_info)
             # Rollback in case there is error
             self._conn.rollback()
         except IntegrityError, e:
-            logger.error("执行sql失败IntegrityError：" + e.message + "\tsql=" + sql_info)
+            LOGGER.error("执行sql失败IntegrityError：" + e.message + "\tsql=" + sql_info)
             self._conn.rollback()
         except Exception, e:
-            logger.error("执行sql失败 未知错误：" + e.message + "\tsql=" + sql_info)
+            LOGGER.error("执行sql失败 未知错误：" + e.message + "\tsql=" + sql_info)
             self._conn.rollback()
         cur.close()
 
     def execute_many(self, sql, params_list=None):
         if not params_list:
-            logger.error("paramsList is None")
+            LOGGER.error("paramsList is None")
         cur = self._conn.cursor()
         try:
             cur.executemany(sql, params_list)
             self._conn.commit()
         except ProgrammingError, e:
-            logger.error("执行sql失败：" + e.message + str(params_list[0]))
+            LOGGER.error("执行sql失败：" + e.message + str(params_list[0]))
         except IntegrityError, e:
-            logger.error("执行sql失败IntegrityError：" + e.message + str(params_list[0]))
+            LOGGER.error("执行sql失败IntegrityError：" + e.message + str(params_list[0]))
         except Exception, e:
-            logger.error("执行sql失败 未知错误：" + e.message + str(params_list[0]))
+            LOGGER.error("执行sql失败 未知错误：" + e.message + str(params_list[0]))
 
     def get_max_value(self, key_field_name, table_name):
         sql = "select max(" + key_field_name + ") from " + table_name
