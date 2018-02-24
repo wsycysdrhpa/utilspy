@@ -1,9 +1,8 @@
-#!/usr/bin/python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# @version: 1.0
-# @author: Aruan
-# @date: '2015/11/21'
+# @update: '2018/2/24'
+# @description:
 
 
 import re
@@ -13,7 +12,7 @@ import jieba
 
 class ChinesePreprocessor(object):
     """
-    文字预处理
+    中文预处理
     """
     def __init__(self):
         pass
@@ -155,5 +154,5 @@ if __name__ == "__main__":
     chinese_preprocessor = ChinesePreprocessor()
     # test_uni_sent = u"这个非常好，可以'QUchu'所有的非中文标记！！!!"
     # print chinese_preprocessor.repl_non_chinese_characters(test_uni_sent)
-    # chinese_preprocessor.del_file_stop_word('file/test/test_stop_word.txt', 'file/test/test_in.txt', 'file/test/test_out.txt')
-    # chinese_preprocessor.seg_file_sent('file/test/test_in.txt', 'file/test/test_out.txt', userdict_file=False, hmm=False)
+    # chinese_preprocessor.del_file_stop_word('data/test/test_stop_word.txt', 'data/test/test_in.txt', 'data/test/test_out.txt')
+    # chinese_preprocessor.seg_file_sent('data/test/test_in.txt', 'data/test/test_out.txt', userdict_file=False, hmm=False)

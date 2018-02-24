@@ -91,3 +91,5 @@ class MailSender:
                            "receivers": emailReceivers}
 
 
+if __name__ == "__main__":
+    pass

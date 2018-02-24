@@ -1,19 +1,20 @@
-## yzs_utils
+## utilspy
 
 ### 功能说明
-yzs_utils为python项目的通用工具库
+**python项目的通用工具库**
 
-### 使用方法
-
-1. 通过git下载python-utils包，解压到某一文件夹；（建议通过git clone）
+推荐使用示例(默认windows环境, linux下类似)：
+1. 通过git clone下载utilspy包，下载位置H:\Code\Tools\Python\tools\，tools同级文件夹中需要有`__init__.py`文件，这样才能import:
+  git clone https://github.com/wsycysdrhpa/utilspy.git；
 2. 在python的site-package目录下创建一个utils.pth文件；
-3. 在utils.pth文件中写入python-utils的文件夹路径，例：E:\work\utils\python-utils\yzs_utils
-4. 测试：
+3. 在utils.pth文件中写入tools所在的文件夹路径，例：H:\Code\Tools\Python\
 
+### 测试
 ```
->>> import yzs_utils
->>> from yzs_utils.time.time_helper import TimeHelper
+>>> from tools.utilspy.time.time_helper import TimeHelper
 >>> print TimeHelper.now()
-2016-12-24 03:26:15
->>> 
 ```
+
+备注：
+放置在tools下是为了以后多机部署时候更加方便，不需要每台机器都下载工具，
+只需要在工程中新建tools文件夹(包含`__init__.py`)，并将utilspy拷贝过来就可以使用，且不需要改动代码

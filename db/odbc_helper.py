@@ -11,7 +11,7 @@ from _sqlite3 import ProgrammingError, IntegrityError
 
 import pyodbc
 
-logger = logging.getLogger("error")
+logger = logging.getLogger("dual")
 
 
 class OdbcHelper(object):
@@ -82,6 +82,7 @@ class OdbcHelper(object):
 
 
 if __name__ == "__main__":
+    pass
     # TODO pyodbc 可以连接mysql, sql server, access, 考虑写一个通用的helper，支持连接这三种database
     # 都是sql类的，所以连接参数用一个str
     # 其他方法一样
@@ -94,4 +95,3 @@ if __name__ == "__main__":
     #     print record
     for record in result:
         print record
-    pass

@@ -1,6 +1,5 @@
 #!/usr/bin/python
-#-*- coding: utf8 -*-
-
+# -*- coding: utf8 -*-
 
 # @version: 1.0
 # @author: luojie
@@ -48,8 +47,8 @@ class MongoDbHelper():
     #     return self._database[collection_name].find(condition)
     #
     # def insert(self, collection_name, items):
-    #     collection = self._database[collection_name]
-    #     return collection.insert(items)
+    #     list = self._database[collection_name]
+    #     return list.insert(items)
     #
     # def clear(self, collection_name):
     #     self._database[collection_name].remove()
@@ -59,8 +58,8 @@ class MongoDbHelper():
 
 
 if __name__ == "__main__":
-    from db.mongo_db.mongo_dao import MongoDao
+    pass
+    from utilspy.db.mongo_db.mongo_dao import MongoDao
     mongo_db_helper = MongoDbHelper("mongodb://luojie:kaimen@127.0.0.1:27017/admin", "heweather")
     mongo_dao = MongoDao("aqi_station", mongo_db_helper)
     print mongo_dao.find_one()
-    pass

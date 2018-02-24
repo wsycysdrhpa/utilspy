@@ -8,7 +8,7 @@
 
 import ConfigParser
 
-from yzs_utils.db.mysql_helper import MySqlHelper
+from utilspy.db.mysql_helper import MySqlHelper
 
 
 class DbHelper(MySqlHelper):

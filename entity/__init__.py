@@ -6,7 +6,7 @@
 # @date: '14-4-17'
 
 
-class className():
+class ClassName(object):
     def __init__(self):
         pass
 

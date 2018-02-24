@@ -1,12 +1,11 @@
-# -*- coding:utf-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# @update: '2016/12/8'
+# @description:
 
 
-# @version: 1.0
-# @author: renhe
-# @date: '14-4-10'
-
-
-class className():
+class ClassName(object):
     def __init__(self):
         pass
 

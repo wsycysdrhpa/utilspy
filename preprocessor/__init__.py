@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 # @version: 1.0
-# @author: Aruan
 # @date: '2015/11/21'
 
 

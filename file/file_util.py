@@ -4,9 +4,11 @@
 # @version: 1.0
 # @author: daichi
 # @date: '14-8-8'
+
+
 import os
 import re
-from yzs_utils.collection.list_helper import list_duplicate_removal
+from utilspy.list.list_util import list_duplicate_removal
 
 
 def delete_file_folder(src):
@@ -16,7 +18,7 @@ def delete_file_folder(src):
             os.remove(src)
         except:
             pass
-    # if file is dir just delete the child file and dir ,keep the current dir
+    # if data is dir just delete the child data and dir ,keep the current dir
     elif os.path.isdir(src):
         for item in os.listdir(src):
             itemsrc=os.path.join(src,item)
@@ -119,8 +121,6 @@ def split_file(file_name, count):
         sub_file.close()
     file.close()
     print('split ok!')
-
-
 
 
 if __name__=='__main__':

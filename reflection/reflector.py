@@ -6,7 +6,7 @@
 # @date: '14-9-5'
 
 
-class Reflector():
+class Reflector(object):
     def __init__(self):
         pass
 

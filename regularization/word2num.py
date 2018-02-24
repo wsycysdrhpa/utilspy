@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# @version: 1.0
-# @author: Aruan
-# @email: ruanhp1@lenovo.com
 # @update: '2017/10/31'
 # @description:
 

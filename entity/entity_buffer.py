@@ -1,6 +1,5 @@
-#!/usr/bin/python
-#-*- coding: utf8 -*-
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # @version: 1.0
 # @author: 
@@ -10,7 +9,7 @@
 import threading
 
 
-class EntityBuffer():
+class EntityBuffer(object):
     def __init__(self, size=10):
         self._size = size
         self._entity_list = []
@@ -38,3 +37,7 @@ class EntityBuffer():
         self._entity_list = self._entity_list[size:]
         self._lock.release()
         return entities
+
+
+if __name__ == "__main__":
+    pass

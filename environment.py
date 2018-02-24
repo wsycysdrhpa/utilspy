@@ -1,19 +1,18 @@
-# -*- coding:utf-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-
-# @version: 1.0
-# @author:
-# @date: '14-4-10'
+# @update: '2014/4/10'
+# @description:
 
 
 import os
 from ConfigParser import ConfigParser
 from ConfigParser import NoSectionError
 
-from yzs_utils.logger import Logger
+from utilspy.log.logger import Logger
 
 
-class Environment():
+class Environment(object):
 
     instance = None
 

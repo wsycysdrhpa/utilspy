@@ -6,9 +6,6 @@
 # @date: '14-7-11'
 
 
-import re
-
-
 class RegexHelper(object):
     def __init__(self):
         pass

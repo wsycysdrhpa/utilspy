@@ -8,12 +8,14 @@
 
 import logging
 
+import MySQLdb
 from mysql.connector import ProgrammingError
 from mysql.connector import IntegrityError
 from mysql.connector.pooling import MySQLConnectionPool
 
 
-logger = logging.getLogger("error")
+logger = logging.getLogger("dual")
+
 
 class MySqlPoolHelper(object):
     def __init__(self, db_setting):

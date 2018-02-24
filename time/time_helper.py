@@ -1,9 +1,8 @@
-# -*- coding:utf-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-
-# @version: 1.0
-# @author:
-# @date: '14-4-10'
+# @update: '2018/2/14'
+# @description:
 
 
 import time

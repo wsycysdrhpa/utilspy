@@ -1,13 +1,11 @@
 #!/usr/bin/python
-#-*- coding: utf8 -*-
+# -*- coding: utf8 -*-
 
-
-# @version: 1.0
 # @author: 
 # @date: '14-4-11'
 
 
-from yzs_utils.db.mysql import MySqlHelper
+from utilspy.db.mysql_helper import MySqlHelper
 
 
 class EntityManager:

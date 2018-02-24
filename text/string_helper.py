@@ -1,20 +1,21 @@
-#!/usr/bin/python
-#-*- coding: utf8 -*-
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # @version: 1.0
 # @author: luojie
 # @date: '14-4-11'
 
 
-from yzs_utils.text.string_handler import StringHandler
+from utilspy.text.string_handler import StringHandler
 
 
-class StringHelper:
+class StringHelper(object):
     def __init__(self):
         pass
 
-    def is_empty(self, string):
+    @staticmethod
+    def is_empty(string):
+        # or 遇真则真, and 遇假则假
         return string == "" or string == " " or string is None
 
     @staticmethod
@@ -40,5 +41,12 @@ class StringHelper:
 
 
 if __name__ == "__main__":
-    print StringHelper.to_class_name("redis_file_saver")
     pass
+    s = ''
+    print StringHelper.is_empty(s)
+
+    s = 'hello!'
+    print StringHelper.slice(s, '1:5')
+    print s[1:5]
+
+    print StringHelper.to_class_name("redis_file_saver")

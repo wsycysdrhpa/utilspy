@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-
 # @version: 1.0
 # @author: luojie
 # @date: '2015/10/29'
@@ -10,8 +9,8 @@ import json
 
 from pymongo.collection import Collection
 
-from yzs_utils.entity.entity_buffer import EntityBuffer
-from yzs_utils.text.file_helper import FileHelper
+from utilspy.entity.entity_buffer import EntityBuffer
+from utilspy.file.file_helper import FileHelper
 
 
 class MongoDao(Collection):
@@ -21,7 +20,8 @@ class MongoDao(Collection):
 
 
 if __name__ == "__main__":
-    from db.mongo_db.mongo_db_helper import MongoDbHelper
+    pass
+    from utilspy.db.mongo_db.mongo_db_helper import MongoDbHelper
     mongo_db_helper = MongoDbHelper("10.10.10.123", "music")
     dao = MongoDao("musicInfo", mongo_db_helper)
     data_files = FileHelper.get_file_list("E:/work/yzs/dcs/data/xiami/musicInfo")
@@ -40,4 +40,3 @@ if __name__ == "__main__":
         dao.insert_many(entity_buffer.get_all_entities())
         entity_buffer.empty()
     mongo_db_helper.close()
-    pass

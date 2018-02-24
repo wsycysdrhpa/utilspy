@@ -12,7 +12,8 @@ from _sqlite3 import ProgrammingError, IntegrityError
 import pymssql
 
 
-logger = logging.getLogger("error")
+logger = logging.getLogger("dual")
+
 
 class SqlServerHelper():
     def __init__(self):

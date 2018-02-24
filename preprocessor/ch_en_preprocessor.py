@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# @version: 1.0
-# @author: Aruan
-# @email: ruanhp1@lenovo.com
-# @update: '2017/9/30'
+# @update: '2018/2/24'
 # @description: 
 
 
@@ -15,18 +12,18 @@ import codecs
 import jieba
 
 
-current_file_path = os.path.abspath(__file__)
-current_dir_path = os.path.dirname(current_file_path)
-parent_dir_path = os.path.dirname(current_dir_path)
+CURRENT_FILE_PATH = os.path.abspath(__file__)
+CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
+PARENT_DIR_PATH = os.path.dirname(CURRENT_DIR_PATH)
 
 # Dict absoluate path
-seg_dict_file = os.path.join(current_dir_path, 'file/dict/lenovo/lm_dict/words_for_seg.txt')
+SEG_DICT_FILE = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/lm_dict/words_for_seg.txt')
 
 
-class ChEnPreprocessor(object):
-    def __init__(self, seg_dict=seg_dict_file):
+class ChPreprocessor(object):
+    def __init__(self, seg_dict=SEG_DICT_FILE):
         # Set user dict, use jieba dict
-        # jieba.load_userdict(seg_dict_file)
+        # jieba.load_userdict(seg_dict)
         # Set user dict, do not use jieba dict
         # jieba.set_dictionary(seg_dict)
         self.re_discard_punct = re.compile(u'[^\u4e00-\u9fa5A-Za-z0-9]')
@@ -66,4 +63,4 @@ class ChEnPreprocessor(object):
 
 if __name__ == "__main__":
     pass
-    ch_en_preprocessor = ChEnPreprocessor()
+    ch_preprocessor = ChPreprocessor()
