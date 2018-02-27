@@ -17,7 +17,7 @@ name ={execute_script_name}.ini
 import os
 import logging
 
-from utilspy.env.environment import Environment
+from utilspy.environment.environment import Environment
 
 LOGGER = logging.getLogger('dual')
 
