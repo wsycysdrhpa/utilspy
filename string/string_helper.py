@@ -6,7 +6,7 @@
 # @date: '14-4-11'
 
 
-from utilspy.text.string_handler import StringHandler
+from utilspy.string.string_handler import StringHandler
 
 
 class StringHelper(object):

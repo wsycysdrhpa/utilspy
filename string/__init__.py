@@ -1,8 +1,8 @@
-#!/usr/bin/python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# @version: 1.0
-# @date: '2015/11/21'
+# @author: luojie
+# @date: '14-4-17'
 
 
 class ClassName(object):

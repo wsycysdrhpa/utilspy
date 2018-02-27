@@ -5,8 +5,8 @@
 # @description:
 
 
-import codecs
 import re
+import codecs
 
 
 class TextFilter(object):

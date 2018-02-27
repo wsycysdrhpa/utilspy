@@ -14,7 +14,7 @@ import logging.config
 CURRENT_FILE_PATH = os.path.abspath(__file__)
 CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
 
-# Dict absoluate path
+# log configuration file absoluate path
 CONF_FILE = os.path.join(CURRENT_DIR_PATH, 'conf/logger.conf')
 
 
