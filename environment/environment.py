@@ -1,0 +1,139 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# @update: '2014/4/10'
+# @description:
+
+
+import os
+import logging
+from ConfigParser import ConfigParser
+from ConfigParser import NoSectionError
+
+from utilspy.log.logger import Logger
+
+
+LOGGER = logging.getLogger('dual')
+
+
+class Environment(object):
+
+    instance = None
+
+    def __init__(self, load_configure=False):
+        self._configure_parser = ConfigParser()
+        self._working_dir_path = ""
+        self._script_name = ""
+        self.load_configure = load_configure
+
+    @staticmethod
+    def get_instance(load_configure=False):
+        if not Environment.instance:
+            Environment.instance = Environment(load_configure=load_configure)
+        return Environment.instance
+
+    def init(self, start_file_path, start_file_depth=1):
+        """
+        初始化应用环境
+        :param start_file_path:   调用本方法的代码文件的完整路径
+        :param start_file_depth:  调用本方法的代码文件距离工作目录的深度。如果在工作目录下，深度为1；
+                                  如果在工作目录的一级子文件夹下，深度为2， 以此类推。
+        """
+        self._working_dir_path, self._script_name = self._parse_start_file_name(start_file_path, start_file_depth)
+        self._set_working_path(self._working_dir_path)
+        self._load_configure()
+        self._init_logger()
+
+    def get_script_name(self):
+        return self._script_name
+
+    def get_working_path(self):
+        return self._working_dir_path
+
+    def get_options(self, section):
+        return self._configure_parser.options(section)
+
+    def get_configure_value(self, section, key):
+        try:
+            value = self._configure_parser.get(section, key)
+            return value
+        except NoSectionError, e:
+            LOGGER.error(e.message)
+            return None
+
+    # 必须是单例模式，self.get_db_setting('mysql')
+    def get_db_setting(self, db_setting_section_name):
+        db_setting = {
+            "database": self.get_configure_value(db_setting_section_name, "database"),
+            "host": self.get_configure_value(db_setting_section_name, "host"),
+            "user": self.get_configure_value(db_setting_section_name, "user"),
+            "passwd": self.get_configure_value(db_setting_section_name, "passwd")}
+        return db_setting
+
+    def set_configure_value(self, section, key, value):
+        self._configure_parser.set(section, key, value)
+
+    @staticmethod
+    def _parse_start_file_name(start_file_path, start_file_depth):
+        """
+        解析启动文件名称和该文件深度，返回程序工作目录和调用脚本名称
+        :param start_file_path:   调用本方法的代码文件的完整路径
+        :param start_file_depth:  调用本方法的代码文件距离工作目录的深度。如果在工作目录下，深度为1；
+                                  如果在工作目录的一级子文件夹下，深度为2， 以此类推。
+        :return:
+        """
+        start_file_path = start_file_path.replace("\\", "/")
+        file_name_parts = start_file_path.split('/')
+        if not file_name_parts:
+            LOGGER.error(u"启动文件输入参数错误，输入的不是完整的文件名: " + start_file_path)
+            return None, None
+        script_name = file_name_parts[-1]
+        if "." in script_name:
+            script_name = script_name[:script_name.rindex(".")]
+        file_name_parts = file_name_parts[:start_file_depth*(-1)]
+        project_dir = os.sep.join(file_name_parts)
+        return project_dir, script_name
+
+    def _init_logger(self):
+        if not self.load_configure:
+            Logger.load_configure()
+            return
+        try:
+            logger_file_name = self._configure_parser.get('logger', 'name')
+            logger_file_path = os.path.join(self._working_dir_path, "conf", logger_file_name)
+            if os.path.exists(logger_file_path):
+                Logger.load_configure(logger_file_path)
+            else:
+                Logger.load_configure()
+        except NoSectionError, e:
+            Logger.load_configure()
+            LOGGER.warning(e.message)
+
+    # 若需要加载配置文件，配置文件路径及命名如下:
+    # {working_dir}/conf/{execute_script}.ini
+    def _load_configure(self):
+        if not self.load_configure:
+            return
+        configure_file_path = os.path.join(self._working_dir_path, "conf", self._script_name + ".ini")
+        if not os.path.exists(configure_file_path):
+            return
+        print u"Configure file path is: " + configure_file_path
+        self._configure_parser.read(configure_file_path)
+
+    @staticmethod
+    def _set_working_path(work_dir_path):
+        os.chdir(work_dir_path)
+        print u"Working dir is: " + work_dir_path
+
+
+if __name__ == "__main__":
+    pass
+    CURRENT_FILE_PATH = os.path.abspath(__file__)
+
+    Environment.get_instance(load_configure=False).init(CURRENT_FILE_PATH, 3)
+
+    LOGGER.debug(u'hello')
+    LOGGER.info(u'hello')
+    LOGGER.warning(u'hello')
+    LOGGER.error(u'hello')
+    LOGGER.critical(u'hello')
