@@ -1,16 +1,15 @@
 默认使用的配置文件为：conf/logger.conf
+若调用load_configure方法的脚本位置改变，则log/app.log文件的生成位置也会自动改变
+
 
 调用方法：
-# 注册过程
 import os
 import logging
 
 from utilspy.log.logger import Logger
 
-CURRENT_FILE_PATH = os.path.abspath(__file__)
-CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
-
-Logger.load_configure(CURRENT_DIR_PATH)
+# 注册过程
+Logger.load_configure()
 
 # 使用过程
 # 只输出到屏幕

@@ -15,7 +15,7 @@ CURRENT_FILE_PATH = os.path.abspath(__file__)
 CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
 
 # log configuration file absoluate path
-CONF_FILE = os.path.join(CURRENT_DIR_PATH, 'conf/logger.conf')
+CONF_FILE = os.path.join(CURRENT_DIR_PATH, 'conf/logger.ini')
 
 
 class Logger(object):
@@ -43,15 +43,16 @@ class Logger(object):
             return self._logger_dict[logger_name]
 
     @staticmethod
-    def load_configure(prefix, config_file=None):
-        log_dir = os.path.join(prefix, 'log')
+    def load_configure(config_file=''):
+        # 通过os.chdir()可以动态改变工作目录，改变log/app.log文件生成位置
+        log_dir = os.path.join(os.getcwd(), 'log')
         if not exists(log_dir):
             os.mkdir(log_dir)
         if config_file:
-            print config_file
+            print u"Set log configure file is: " + config_file
             logging.config.fileConfig(config_file)
         else:
-            print CONF_FILE
+            print u"Default log configure file is: " + CONF_FILE
             logging.config.fileConfig(CONF_FILE)
 
     @staticmethod
@@ -92,7 +93,7 @@ class Logger(object):
 
 if __name__ == "__main__":
     pass
-    Logger.load_configure(CURRENT_DIR_PATH)
+    Logger.load_configure()
 
     # 以下代码输出文件名字、行数等信息时有问题，都是：logger.py[line:44]
     # Logger.debug(u'hello', logger_name='dual')
