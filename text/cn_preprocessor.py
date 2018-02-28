@@ -77,7 +77,7 @@ if __name__ == "__main__":
     # Dict absoluate path
     seg_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_seg.txt')
 
-    Logger.load_configure(CURRENT_DIR_PATH)
+    Logger.load_configure()
 
     cn_preprocessor = CnPreprocessor(seg_dict=seg_dict_file, flag='set', HMM=False)
 
