@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
     cn_en_preprocessor = CnEnPreprocessor(seg_dict=seg_dict_file, flag='set', lower=True, HMM=False)
 
-    test_sent = u"I've got it. 这个非常好，!中国科学院自动化研究所。'Yes, ma'am.' the-waiter said.'好Yes, " \
+    test_sent = u"I've got it. 这个非常好，!中国科学院自动化研究所3d全民k歌。'Yes, ma'am.' the-waiter said.'好Yes, " \
                 u"3 is可以'￥21的QUchu'所有的非中文标记！！! doctors'.' 'Yes, it is doctors'' he said."
     print test_sent
 
