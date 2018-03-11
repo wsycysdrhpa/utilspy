@@ -8,6 +8,7 @@
 
 import os
 import codecs
+import random
 
 
 class TextFileHelper(object):
@@ -40,6 +41,39 @@ class TextFileHelper(object):
         if os.path.exists(src_file):
             os.remove(src_file)
 
+    @staticmethod
+    def random_extract_file_data(src_file, proportion=0.0, number=0, extracted_file='', remain_file=''):
+        with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp:
+            lines = src_fp.readlines()
+            # 抽取数量
+            extract_num = 0
+            # 存储抽取出的数据
+            extracted_list = []
+            # 按比例抽取
+            if proportion:
+                extract_num = int(proportion * len(lines))
+            # 按数量抽取
+            if number:
+                extract_num = number
+            for _ in range(extract_num):
+                end = len(lines) - 1
+                pop_index = random.randint(0, end)
+                extracted = lines.pop(pop_index)
+                extracted_list.append(extracted)
+        if extracted_file:
+            with codecs.open(extracted_file, 'wb') as dev_fp:
+                # 此时extracted和line都包含换行符
+                for extracted in extracted_list:
+                    dev_fp.write(extracted)
+        if remain_file:
+            with codecs.open(remain_file, 'wb') as dst_fp:
+                for line in lines:
+                    dst_fp.write(line)
+        extracted_list = [ele.strip() for ele in extracted_list]
+        lines = [line.strip() for line in lines]
+        # extracted_list中元素顺序是打乱的, lines和src_file顺序一致
+        return extracted_list, lines
+
 
 if __name__ == "__main__":
     pass
@@ -52,3 +86,7 @@ if __name__ == "__main__":
     TextFileHelper.append_file(data, 'test.txt')
 
     TextFileHelper.remove_file('test.txt')
+
+    extracted_list, lines = TextFileHelper.random_extract_file_data('test.txt', 0.5, 3, 'extracted.txt', 'remain.txt')
+    print extracted_list
+    print lines
