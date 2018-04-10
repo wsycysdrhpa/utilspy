@@ -166,6 +166,9 @@ if __name__ == "__main__":
     pass
     word2num = Word2Num()
     print word2num.word2num(u"十"), u"十"
+    print word2num.word2num(u"十八"), u"十八"
+    print word2num.word2num(u"十九"), u"十九"
+    print word2num.word2num(u"二十一"), u"二十一"
     print word2num.word2num(u"十一"), u"十一"
     print word2num.word2num(u"一百"), u"一百"
     print word2num.word2num(u"两千七"), u"两千七"
@@ -179,11 +182,6 @@ if __name__ == "__main__":
     print word2num.word2num(u"二十五"), u"二十五"
     print word2num.word2num(u"九"), u"九"
     print word2num.word2num(u"一百二十三"), u"一百二十三"
-    print word2num.word2num(u"十一"), u"十一"
-    print word2num.word2num(u"十八"), u"十八"
-    print word2num.word2num(u"十九"), u"十九"
-    print word2num.word2num(u"二十一"), u"二十一"
-    print word2num.word2num(u"十一"), u"十一"
     print word2num.word2num(u"一千二百零三"), u"一千二百零三"
     print word2num.word2num(u"一万一千一百零一"), u"一万一千一百零一"
     print word2num.word2num(u"一百二十三万四千五百六十七"), u"一百二十三万四千五百六十七"
@@ -195,8 +193,15 @@ if __name__ == "__main__":
     print word2num.word2num(u"四一零"), u"四一零"
     print word2num.word2num(u"四幺零"), u"四幺零"
 
+    print
     print word2num.word2num(u"一二三零六"), u"一二三零六"
     print word2num.word2num(u"幺二三零六"), u"幺二三零六"
+    print word2num.word2num(u"七八九"), u"七八九"
+
+    # 以下情况无法成功转换
+    print
+    print word2num.word2num(u"七八九十"), u"七八九十"
+    print word2num.word2num(u"七八九十十一"), u"七八九十十一"
 
     # print word2num.word2num(u"两毛七"), u"两毛七"
     # print word2num.word2num(u"两毛七分"), u"两毛七分"
