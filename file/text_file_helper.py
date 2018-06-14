@@ -74,6 +74,22 @@ class TextFileHelper(object):
         # extracted_list中元素顺序是打乱的, lines和src_file顺序一致
         return extracted_list, lines
 
+    @staticmethod
+    def pick_columns_of_file(src_file, col_list, dst_file):
+        with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp,\
+                codecs.open(dst_file, 'wb') as dst_fp:
+            for line in src_fp:
+                line = line.strip()
+                if not line:
+                    dst_fp.write(u'\n')
+                else:
+                    new_line = u''
+                    line_array = line.split(u'\t')
+                    for col in col_list:
+                        new_line += u'\t' + line_array[col]
+                    new_line = new_line.strip()
+                    dst_fp.write(new_line + u'\n')
+
 
 if __name__ == "__main__":
     pass
