@@ -117,13 +117,13 @@ class Environment(object):
         configure_file_path = os.path.join(self._working_dir_path, "conf", self._script_name + ".ini")
         if not os.path.exists(configure_file_path):
             return
-        print u"Configure file path is: " + configure_file_path
+        LOGGER.info(u"Configure file path is: " + configure_file_path)
         self._configure_parser.read(configure_file_path)
 
     @staticmethod
     def _set_working_path(work_dir_path):
         os.chdir(work_dir_path)
-        print u"Working dir is: " + work_dir_path
+        LOGGER.info(u"Working dir is: " + work_dir_path)
 
 
 if __name__ == "__main__":
