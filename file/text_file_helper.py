@@ -93,16 +93,23 @@ class TextFileHelper(object):
 
 if __name__ == "__main__":
     pass
-    in_file = '__init__.py'
-    print TextFileHelper.read_all(in_file)
+    # in_file = '__init__.py'
+    # print TextFileHelper.read_all(in_file)
 
-    data = u"为了test！"
-    TextFileHelper.write(data, 'test.txt')
+    # data = u"为了test！"
+    # TextFileHelper.write(data, 'test.txt')
 
-    TextFileHelper.append_file(data, 'test.txt')
+    # TextFileHelper.append_file(data, 'test.txt')
 
-    TextFileHelper.remove_file('test.txt')
+    # TextFileHelper.remove_file('test.txt')
 
-    extracted_list, lines = TextFileHelper.random_extract_file_data('test.txt', 0.5, 3, 'extracted.txt', 'remain.txt')
-    print extracted_list
-    print lines
+    src_file = r''
+    proportion = 0.0
+    number = 0
+    extracted_file = r''
+    remain_file = r''
+    extracted_list, lines = TextFileHelper.random_extract_file_data(src_file=src_file,
+                                                                    proportion=proportion,
+                                                                    number=number,
+                                                                    extracted_file=extracted_file,
+                                                                    remain_file=remain_file)
