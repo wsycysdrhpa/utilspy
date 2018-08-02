@@ -9,6 +9,12 @@
 import os
 import codecs
 import random
+import sys
+
+
+# Set python default encode
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 class TextFileHelper(object):
