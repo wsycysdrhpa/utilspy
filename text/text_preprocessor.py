@@ -44,6 +44,7 @@ class TextPreprocessor(object):
         with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
                 codecs.open(dst_file, 'wb') as dst_fp:
             for line in src_fp:
+                line = line.strip()
                 seged_line = self.preprocessor.seg_sent(line)
                 dst_fp.write(seged_line + u'\n')
 
@@ -58,10 +59,11 @@ class TextPreprocessor(object):
         with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
                 codecs.open(dst_file, 'wb') as dst_fp:
             for line in src_fp:
+                line = line.strip()
                 elements = line.split(u'\t')
                 elements[column] = self.seg_line(elements[column].strip())
-                seged_line = u'\t'.join(elements).strip()
-                dst_fp.write(seged_line + u'\n')
+                line = u'\t'.join(elements).strip()
+                dst_fp.write(line + u'\n')
 
     @staticmethod
     def del_blank_line(src_file, dst_file):
@@ -84,8 +86,27 @@ class TextPreprocessor(object):
         with codecs.open(seged_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
                 codecs.open(del_stop_seged_file, 'wb') as dst_fp:
             for seged_sent in src_fp:
+                seged_sent = seged_sent.strip()
                 del_stop_seged_sent = self.del_sent_stop_word(seged_sent, stop_word_dict)
                 dst_fp.write(del_stop_seged_sent + u'\n')
+
+    def del_file_column_stop_word(self, seged_file, column, del_stop_seged_file, stop_word_file=STOP_WORD_FILE):
+        """
+        加入停用词表, 选择某列并删除停用词, 列之间以tab分割, 处理完成后与其他列拼接
+        :param seged_file: 分词后的文件路径
+        :param column: 选取某一列，0为第一列
+        :param del_stop_seged_file: 输出文件路径, 如果删除停用词后结果是空串，输出空串
+        :param stop_word_file: 停用词文件路径
+        :return: 
+        """
+        stop_word_dict = DictUtil.file2dict(stop_word_file)
+        with codecs.open(seged_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
+                codecs.open(del_stop_seged_file, 'wb') as dst_fp:
+            for line in src_fp:
+                elements = line.split(u'\t')
+                elements[column] = self.del_sent_stop_word(elements[column].strip(), stop_word_dict)
+                line = u'\t'.join(elements).strip()
+                dst_fp.write(line + u'\n')
 
     @staticmethod
     def del_sent_stop_word(seged_sent, stop_word_dict):
