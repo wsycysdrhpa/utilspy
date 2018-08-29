@@ -10,6 +10,7 @@ import logging
 
 import jieba
 
+from utilspy.text.cn_preprocessor import CnPreprocessor
 from utilspy.text.en_preprocessor import EnPreprocessor
 
 
@@ -24,6 +25,7 @@ class CnEnPreprocessor(object):
         self.re_useless = re.compile(u'[^0-9a-zA-Z\'\u4e00-\u9fa5]')
         self.re_muti_space = re.compile(u'\s+')
         self.re_cn_phrase = re.compile(u'[\u4e00-\u9fa5]+')
+        self.cn_preprocessor = CnPreprocessor()
         self.en_preprocessor = EnPreprocessor()
         if seg_dict:
             if flag == 'load':
@@ -37,13 +39,13 @@ class CnEnPreprocessor(object):
             else:
                 pass
 
-    def seg_sent(self, row_sent):
+    def seg_sent_to_single(self, row_sent):
         if self.lower:
             row_sent = row_sent.lower()
         sent = row_sent.strip()
         sent = self.repl_useless_character(sent, u' ')
         # 处理中文，将匹配到的中文短语进行分词，为了和其他字符分割，前后添加空格
-        sent = self.re_cn_phrase.sub(self._add_blank, sent)
+        sent = self.re_cn_phrase.sub(self._cut_to_single_and_add_blank, sent)
         # 处理英文
         words = sent.split(u' ')
         for i in range(len(words)):
@@ -55,10 +57,34 @@ class CnEnPreprocessor(object):
         sent = self.re_muti_space.sub(u' ', sent).strip()
         return sent
 
-    def _add_blank(self, matched):
+    def seg_sent(self, row_sent):
+        if self.lower:
+            row_sent = row_sent.lower()
+        sent = row_sent.strip()
+        sent = self.repl_useless_character(sent, u' ')
+        # 处理中文，将匹配到的中文短语进行分词，为了和其他字符分割，前后添加空格
+        sent = self.re_cn_phrase.sub(self._cut_and_add_blank, sent)
+        # 处理英文
+        words = sent.split(u' ')
+        for i in range(len(words)):
+            if self.en_preprocessor.noun_plural_possessive.match(words[i]):
+                continue
+            words[i] = words[i].strip(u'\'')
+        sent = u' '.join(words)
+        # 去除多余空格
+        sent = self.re_muti_space.sub(u' ', sent).strip()
+        return sent
+
+    def _cut_and_add_blank(self, matched):
         src_uni = matched.group()
         dst_uni = u' '.join(jieba.cut(src_uni, HMM=self.HMM))
-        dst_uni = u' ' + dst_uni + u' '
+        dst_uni = u' %s ' % dst_uni
+        return dst_uni
+
+    def _cut_to_single_and_add_blank(self, matched):
+        src_uni = matched.group()
+        dst_uni = self.cn_preprocessor.seg_sent_to_single(src_uni)
+        dst_uni = u' %s ' % dst_uni
         return dst_uni
 
     def repl_useless_character(self, uni_sent, repl=u' '):
@@ -97,4 +123,7 @@ if __name__ == "__main__":
     print test_sent
 
     test_sent = cn_en_preprocessor.seg_sent(test_sent)
+    print test_sent
+
+    test_sent = cn_en_preprocessor.seg_sent_to_single(test_sent)
     print test_sent

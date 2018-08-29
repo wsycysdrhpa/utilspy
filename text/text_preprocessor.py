@@ -37,6 +37,10 @@ class TextPreprocessor(object):
             # args=(True,)
             self.preprocessor = EnPreprocessor(lower=args[0])
 
+    # 按字切分
+    def seg_line_to_single(self, line):
+        return self.preprocessor.seg_sent_to_single(line)
+
     def seg_line(self, line):
         return self.preprocessor.seg_sent(line)
 
@@ -140,8 +144,11 @@ if __name__ == "__main__":
                 u"3 is可以'￥21的QUchu'所有的非中文标记！！! doctors'.' 'Yes, it is doctors'' he said."
     print test_sent
 
-    test_sent = text_preprocessor.seg_line(test_sent)
-    print test_sent
+    seged_test_sent = text_preprocessor.seg_line(test_sent)
+    print seged_test_sent
+
+    single_seged_test_sent = text_preprocessor.seg_line_to_single(test_sent)
+    print single_seged_test_sent
 
     text_preprocessor.seg_file_line(r'data/test/test_in.txt', r'data/test/test_seg_file_out.txt')
 

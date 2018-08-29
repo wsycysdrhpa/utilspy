@@ -21,6 +21,9 @@ class EnPreprocessor(object):
         # 忽略情形如: 'Yes, it is doctors''
         self.noun_plural_possessive = re.compile(u'^[a-zA-Z]+s\'$')
 
+    def seg_sent_to_single(self, row_sent):
+        return self.seg_sent(row_sent)
+
     def seg_sent(self, row_sent):
         """
         处理英文字符串，用空格替换非英文
@@ -63,3 +66,4 @@ if __name__ == "__main__":
 
     print test_cent
     print en_preprocessor.seg_sent(test_cent)
+    print en_preprocessor.seg_sent_to_single(test_cent)

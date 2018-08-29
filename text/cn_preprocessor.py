@@ -35,6 +35,13 @@ class CnPreprocessor(object):
             else:
                 pass
 
+    def seg_sent_to_single(self, row_sent):
+        sent = row_sent.strip()
+        # 先把句子按照非中文符号拆分成短句序列
+        repled_sent = self.repl_non_chinese_character(sent)
+        w_list = list(repled_sent)
+        return self.re_muti_space.sub(u' ', u' '.join(w_list)).strip()
+
     def seg_sent(self, row_sent):
         """
         将输入的句子分成短句，再进行分词，返回分词后unicode字符串
@@ -87,3 +94,4 @@ if __name__ == "__main__":
     print test_sent
 
     print cn_preprocessor.seg_sent(test_sent)
+    print cn_preprocessor.seg_sent_to_single(test_sent)
