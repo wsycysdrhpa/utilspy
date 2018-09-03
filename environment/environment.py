@@ -20,16 +20,16 @@ class Environment(object):
 
     instance = None
 
-    def __init__(self, load_configure=False):
+    def __init__(self, load_user_configure=False):
         self._configure_parser = ConfigParser()
         self._working_dir_path = ""
         self._script_name = ""
-        self.load_configure = load_configure
+        self.load_user_configure = load_user_configure
 
     @staticmethod
-    def get_instance(load_configure=False):
+    def get_instance(load_user_configure=False):
         if not Environment.instance:
-            Environment.instance = Environment(load_configure=load_configure)
+            Environment.instance = Environment(load_user_configure=load_user_configure)
         return Environment.instance
 
     def init(self, start_file_path, start_file_depth=1):
@@ -95,7 +95,7 @@ class Environment(object):
         return project_dir, script_name
 
     def _init_logger(self):
-        if not self.load_configure:
+        if not self.load_user_configure:
             Logger.load_configure()
             return
         try:
@@ -109,15 +109,15 @@ class Environment(object):
             Logger.load_configure()
             LOGGER.warning(e.message)
 
-    # 若需要加载配置文件，配置文件路径及命名如下:
+    # 若需要加载总配置文件，总配置文件路径及命名如下:
     # {working_dir}/conf/{execute_script}.ini
     def _load_configure(self):
-        if not self.load_configure:
+        if not self.load_user_configure:
             return
         configure_file_path = os.path.join(self._working_dir_path, "conf", self._script_name + ".ini")
         if not os.path.exists(configure_file_path):
             return
-        print u"Configure file path is: " + configure_file_path
+        print u"Overall Configure file path is: " + configure_file_path
         self._configure_parser.read(configure_file_path)
 
     @staticmethod
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     pass
     CURRENT_FILE_PATH = os.path.abspath(__file__)
 
-    Environment.get_instance(load_configure=False).init(CURRENT_FILE_PATH, 3)
+    Environment.get_instance(load_user_configure=False).init(CURRENT_FILE_PATH, 3)
 
     LOGGER.debug(u'hello')
     LOGGER.info(u'hello')
