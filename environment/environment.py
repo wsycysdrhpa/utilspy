@@ -67,7 +67,7 @@ class Environment(object):
             "database": self.get_configure_value(db_setting_section_name, "database"),
             "host": self.get_configure_value(db_setting_section_name, "host"),
             "user": self.get_configure_value(db_setting_section_name, "user"),
-            "passwd": self.get_configure_value(db_setting_section_name, "passwd")}
+            "password": self.get_configure_value(db_setting_section_name, "password")}
         return db_setting
 
     def set_configure_value(self, section, key, value):

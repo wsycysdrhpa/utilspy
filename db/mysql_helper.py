@@ -23,8 +23,8 @@ class MySqlHelper(object):
         """
         self._conn = None
 
-    def create_db(self, host, db_name, user, passwd):
-        conn = MySQLdb.connect(host=host, user=user, passwd=passwd, charset="utf8")
+    def create_db(self, host, db_name, user, password):
+        conn = MySQLdb.connect(host=host, user=user, password=password, charset="utf8")
         cur = conn.cursor()
         cur.execute('create database if not exists ' + db_name)
         conn.commit()
@@ -41,13 +41,16 @@ class MySqlHelper(object):
         """
         self._conn = MySQLdb.connect(host=host,
                                      user=user,
-                                     passwd=password,
+                                     password=password,
                                      db=database,
                                      charset=charset)
         return self._conn
 
     def open_by_db_setting(self, db_setting):
-        return self.open(db_setting["host"], db_setting["db"], db_setting["user"], db_setting["passwd"])
+        return self.open(database=db_setting["database"],
+                         host=db_setting["host"],
+                         user=db_setting["user"],
+                         password=db_setting["password"])
 
     def read(self, sql, params=None):
         """
