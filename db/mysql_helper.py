@@ -40,15 +40,15 @@ class MySqlHelper(object):
         :return: class，连接成功，返回数据库连接对象，类型为<class 'MySQLdb.connections.Connection'>
         """
         self._conn = MySQLdb.connect(host=host,
-                                     user=user,
-                                     password=password,
                                      db=database,
+                                     user=user,
+                                     passwd=password,
                                      charset=charset)
         return self._conn
 
     def open_by_db_setting(self, db_setting):
-        return self.open(database=db_setting["database"],
-                         host=db_setting["host"],
+        return self.open(host=db_setting["host"],
+                         database=db_setting["database"],
                          user=db_setting["user"],
                          password=db_setting["password"])
 
