@@ -155,6 +155,6 @@ if __name__ == "__main__":
     # result = text_preprocessor.del_sent_stop_word(test_sent, DictUtil.file2dict(r'data/stop_word/stop_word.txt'))
     # print result
 
-    text_preprocessor.del_file_stop_word(r'data/test/test_seg_file_out.txt', r'data/test/test_del_stop_out.txt')
+    # text_preprocessor.del_file_stop_word(r'data/test/test_seg_file_out.txt', r'data/test/test_del_stop_out.txt')
 
-    text_preprocessor.del_blank_line(r'data/test/test_del_stop_out.txt', r'data/test/test_del_blank_out.txt')
+    # text_preprocessor.del_blank_line(r'data/test/test_del_stop_out.txt', r'data/test/test_del_blank_out.txt')
