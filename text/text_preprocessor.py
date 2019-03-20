@@ -7,6 +7,7 @@
 
 import os
 import codecs
+import re
 
 
 from utilspy.text.cn_en_preprocessor import CnEnPreprocessor
@@ -36,6 +37,10 @@ class TextPreprocessor(object):
         if handle == 'en':
             # args=(True,)
             self.preprocessor = EnPreprocessor(lower=args[0])
+
+        self.re_space = re.compile(u"\s")
+        # [A-Za-z0-9_]
+        self.re_en_and_num = re.compile(u"\w+")
 
     # 按字切分
     def seg_line_to_single(self, line):
@@ -130,6 +135,18 @@ class TextPreprocessor(object):
                 tmp.append(word)
         return u' '.join(tmp)
 
+    def deseg2file(self, src_file, dst_file):
+        with codecs.open(src_file, "rb", "utf-8", errors="ignore") as src_fp, \
+                codecs.open(dst_file, "wb") as dst_fp:
+            for line in src_fp:
+                line = line.strip()
+                if self.re_en_and_num.search(line):
+                    dst_fp.write(line + u"\n")
+                    continue
+                else:
+                    text = u"".join(self.re_space.split(line)[:])
+                    dst_fp.write(text + u"\n")
+
 
 if __name__ == "__main__":
     pass
@@ -150,7 +167,7 @@ if __name__ == "__main__":
     single_seged_test_sent = text_preprocessor.seg_line_to_single(test_sent)
     print single_seged_test_sent
 
-    text_preprocessor.seg_file_line(r'data/test/test_in.txt', r'data/test/test_seg_file_out.txt')
+    # text_preprocessor.seg_file_line(r'data/test/test_in.txt', r'data/test/test_seg_file_out.txt')
 
     # result = text_preprocessor.del_sent_stop_word(test_sent, DictUtil.file2dict(r'data/stop_word/stop_word.txt'))
     # print result
@@ -158,3 +175,7 @@ if __name__ == "__main__":
     # text_preprocessor.del_file_stop_word(r'data/test/test_seg_file_out.txt', r'data/test/test_del_stop_out.txt')
 
     # text_preprocessor.del_blank_line(r'data/test/test_del_stop_out.txt', r'data/test/test_del_blank_out.txt')
+
+    # in_file = r""
+    # out_file = r""
+    # text_preprocessor.deseg2file(in_file, out_file)
