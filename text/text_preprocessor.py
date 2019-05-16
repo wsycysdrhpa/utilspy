@@ -147,6 +147,26 @@ class TextPreprocessor(object):
                     text = u"".join(self.re_space.split(line)[:])
                     dst_fp.write(text + u"\n")
 
+    # seq = "中国科学院 自动化 研究所"
+    # return = "研究所 自动化 中国科学院"
+    def rev_seq(self, seq):
+        seq = seq.strip()
+        seq_list = seq.split(u" ")
+        rev_seq_list = list(reversed(seq_list))
+        rev_seq = u" ".join(rev_seq_list)
+        return rev_seq
+
+    def rev_seq2file(self, src_file, dst_file):
+        with codecs.open(src_file, "rb", "utf-8", errors="ignore") as src_fp, \
+                codecs.open(dst_file, "wb") as dst_fp:
+            for seq in src_fp:
+                seq = seq.strip()
+                if not seq:
+                    continue
+                else:
+                    rev_seq = self.rev_seq(seq)
+                    dst_fp.write(rev_seq + u"\n")
+
 
 if __name__ == "__main__":
     pass
@@ -179,3 +199,7 @@ if __name__ == "__main__":
     # in_file = r""
     # out_file = r""
     # text_preprocessor.deseg2file(in_file, out_file)
+
+    # in_file = r""
+    # out_file = r""
+    # text_preprocessor.rev_seq2file(in_file, out_file)
