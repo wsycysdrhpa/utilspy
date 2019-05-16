@@ -8,6 +8,7 @@
 import os
 import codecs
 import re
+import sys
 
 
 from utilspy.text.cn_en_preprocessor import CnEnPreprocessor
@@ -21,6 +22,10 @@ CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
 
 # Stop word absoluate path
 STOP_WORD_FILE = os.path.join(CURRENT_DIR_PATH, r'data/stop_word/stop_word.txt')
+
+# Set python default encode
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 
 class TextPreprocessor(object):
