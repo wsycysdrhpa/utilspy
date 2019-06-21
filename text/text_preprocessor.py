@@ -32,10 +32,11 @@ class TextPreprocessor(object):
     """
     中英文预处理，针对中文、英文和数字
     """
-    def __init__(self, handle='cn_en', args=('', 'load', True, False)):
+    def __init__(self, handle='cn_en', args=('', 'load', True, False, '')):
         if handle == 'cn_en':
-            # args=('', 'load', True, False)
-            self.preprocessor = CnEnPreprocessor(seg_dict=args[0], flag=args[1], lower=args[2], HMM=args[3])
+            # args=('', 'load', True, False, '')
+            self.preprocessor = CnEnPreprocessor(seg_dict=args[0], flag=args[1], lower=args[2], HMM=args[3],
+                                                 break_up_dict=args[4])
         if handle == 'cn':
             # args=('', 'load', False)
             self.preprocessor = CnPreprocessor(seg_dict=args[0], flag=args[1], HMM=args[2])
@@ -53,6 +54,10 @@ class TextPreprocessor(object):
 
     def seg_line(self, line):
         return self.preprocessor.seg_sent(line)
+
+    # only support ce
+    def seg_line_and_break_up(self, line):
+        return self.preprocessor.seg_line_and_break_up(line)
 
     def seg_file_line(self, src_file, dst_file):
         with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
@@ -176,9 +181,19 @@ class TextPreprocessor(object):
 if __name__ == "__main__":
     pass
     # Dict absoluate path
-    seg_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_seg.txt')
+    # seg_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_seg.txt')
 
-    text_preprocessor = TextPreprocessor('cn_en', args=(seg_dict_file, 'set', True, False))
+    # 使用默认分词字典
+    seg_dict_file = r""
+
+    # 不使用打散字典
+    break_up_dict_file = r""
+
+    # 使用打散字典
+    # break_up_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_lm_yd.txt')
+
+    text_preprocessor = TextPreprocessor('cn_en', args=(seg_dict_file, 'set', True, False,
+                                                        break_up_dict_file))
     # text_preprocessor = TextPreprocessor('cn', args=(seg_dict_file, 'set', False))
     # text_preprocessor = TextPreprocessor('en', args=(True,))
 
@@ -191,6 +206,10 @@ if __name__ == "__main__":
 
     single_seged_test_sent = text_preprocessor.seg_line_to_single(test_sent)
     print single_seged_test_sent
+
+    line = u"中国科学院自动化研究所是21三体综合症的研究基地3aab所长不是我helloworld每周一好的啊"
+    line = text_preprocessor.seg_line_and_break_up(line)
+    print line
 
     # text_preprocessor.seg_file_line(r'data/test/test_in.txt', r'data/test/test_seg_file_out.txt')
 

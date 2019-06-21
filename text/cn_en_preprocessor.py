@@ -7,6 +7,7 @@
 
 import re
 import logging
+import codecs
 
 import jieba
 
@@ -18,7 +19,7 @@ LOGGER = logging.getLogger('consoleOnly')
 
 
 class CnEnPreprocessor(object):
-    def __init__(self, seg_dict='', flag='load', lower=True, HMM=False):
+    def __init__(self, seg_dict='', flag='load', lower=True, HMM=False, break_up_dict=''):
         self.lower = lower
         # jieba.cut方法是否开启HMM，Ture or False，默认不开启
         self.HMM = HMM
@@ -38,6 +39,10 @@ class CnEnPreprocessor(object):
                 LOGGER.info(u"Set user dict and do not use jieba default dict, successfully set")
             else:
                 pass
+        if break_up_dict:
+            self.dict_map = self.build_map(break_up_dict)
+        else:
+            self.dict_map = {}
 
     def seg_sent_to_single(self, row_sent):
         if self.lower:
@@ -75,6 +80,23 @@ class CnEnPreprocessor(object):
         sent = self.re_muti_space.sub(u' ', sent).strip()
         return sent
 
+    def seg_line_and_break_up(self, row_sent):
+        sent = self.seg_sent(row_sent)
+        if self.dict_map:
+            tokens = sent.split()
+            temp = []
+            for token in tokens:
+                if self.dict_map.get(token, -1) == 1:
+                    temp.append(token)
+                else:
+                    # 有中文需要进行打散，其他可能也需要打散，但是为了效率目前跳过
+                    if self.re_cn_phrase.search(token):
+                        temp.extend(self.break_up_token(token, self.dict_map))
+                    else:
+                        temp.append(token)
+            sent = u' '.join(temp)
+        return sent
+
     def _cut_and_add_blank(self, matched):
         src_uni = matched.group()
         dst_uni = u' '.join(jieba.cut(src_uni, HMM=self.HMM))
@@ -99,6 +121,35 @@ class CnEnPreprocessor(object):
         sent = self.re_muti_space.sub(u' ', sent).strip()
         return sent
 
+    def break_up_token(self, word, dict_map):
+        temp = []
+        if len(word) == 0:
+            return []
+        count = len(word)
+        # 倒序，匹配map中最长字符串
+        while count > 0:
+            # 字典中有，则退出循环
+            if dict_map.get(word[:count], -1) != -1:
+                break
+            else:
+                count -= 1
+        if count == 0:
+            count = 1
+        temp.append(word[:count])
+        # 递归调用
+        remain = self.break_up_token(word[count:], dict_map)
+        temp.extend(remain)
+        return temp
+
+    def build_map(self, src_dict_file):
+        dict_map = {}
+        with codecs.open(src_dict_file, 'rb', 'utf-8') as src_fp:
+            for line in src_fp:
+                line = line.strip()
+                if line:
+                    dict_map[line] = 1
+        return dict_map
+
 
 if __name__ == "__main__":
     pass
@@ -109,21 +160,35 @@ if __name__ == "__main__":
     CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
 
     # Dict absoluate path
-    seg_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_seg.txt')
+    # seg_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_seg.txt')
+
+    # 使用默认分词字典
+    seg_dict_file = r""
+
+    # 不使用打散字典
+    break_up_dict_file = r""
+
+    # 使用打散字典
+    # break_up_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_lm_yd.txt')
 
     Logger.load_configure()
 
-    cn_en_preprocessor = CnEnPreprocessor(seg_dict=seg_dict_file, flag='set', lower=True, HMM=False)
+    cn_en_preprocessor = CnEnPreprocessor(seg_dict=seg_dict_file, flag='set', lower=True, HMM=False,
+                                          break_up_dict=break_up_dict_file)
 
     test_sent = u"I've got it. 这个非常好，!中国科学院自动化研究所3d全民k歌。'Yes, ma'am.' the-waiter said.'好Yes, " \
                 u"3 is可以'￥21的QUchu'所有的非中文标记！！! doctors'.' 'Yes, it is doctors'' he said."
     print test_sent
 
-    test_sent = cn_en_preprocessor.repl_useless_character(test_sent)
-    print test_sent
+    test_sent_2 = cn_en_preprocessor.repl_useless_character(test_sent)
+    print test_sent_2
 
-    test_sent = cn_en_preprocessor.seg_sent(test_sent)
-    print test_sent
+    test_sent_3 = cn_en_preprocessor.seg_sent(test_sent)
+    print test_sent_3
 
-    test_sent = cn_en_preprocessor.seg_sent_to_single(test_sent)
-    print test_sent
+    test_sent_4 = cn_en_preprocessor.seg_sent_to_single(test_sent)
+    print test_sent_4
+
+    line = u"中国科学院自动化研究所是21三体综合症的研究基地3aab所长不是我helloworld每周一好的啊"
+    line = cn_en_preprocessor.seg_line_and_break_up(line)
+    print line
