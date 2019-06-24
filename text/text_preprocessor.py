@@ -57,7 +57,7 @@ class TextPreprocessor(object):
 
     # only support ce
     def seg_line_and_break_up(self, line):
-        return self.preprocessor.seg_line_and_break_up(line)
+        return self.preprocessor.seg_sent_and_break_up(line)
 
     def seg_file_line(self, src_file, dst_file):
         with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp, \

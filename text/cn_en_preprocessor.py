@@ -80,7 +80,7 @@ class CnEnPreprocessor(object):
         sent = self.re_muti_space.sub(u' ', sent).strip()
         return sent
 
-    def seg_line_and_break_up(self, row_sent):
+    def seg_sent_and_break_up(self, row_sent):
         sent = self.seg_sent(row_sent)
         if self.dict_map:
             tokens = sent.split()
@@ -190,5 +190,5 @@ if __name__ == "__main__":
     print test_sent_4
 
     line = u"中国科学院自动化研究所是21三体综合症的研究基地3aab所长不是我helloworld每周一好的啊"
-    line = cn_en_preprocessor.seg_line_and_break_up(line)
+    line = cn_en_preprocessor.seg_sent_and_break_up(line)
     print line
