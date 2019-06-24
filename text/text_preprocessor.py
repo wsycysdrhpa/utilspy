@@ -64,9 +64,9 @@ class TextPreprocessor(object):
                 codecs.open(dst_file, 'wb') as dst_fp:
             for line in src_fp:
                 line = line.strip()
-                seged_line = self.preprocessor.seg_sent(line)
-                # seged_line = self.preprocessor.seg_line_to_single(line)
-                # seged_line = self.preprocessor.seg_line_and_break_up(line)
+                seged_line = self.seg_line(line)
+                # seged_line = self.seg_line_to_single(line)
+                # seged_line = self.seg_line_and_break_up(line)
                 dst_fp.write(seged_line + u'\n')
 
     def seg_file_column(self, src_file, column, dst_file):
