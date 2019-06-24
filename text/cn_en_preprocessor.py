@@ -159,11 +159,11 @@ if __name__ == "__main__":
     CURRENT_FILE_PATH = os.path.abspath(__file__)
     CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
 
-    # Dict absoluate path
-    # seg_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_seg.txt')
-
     # 使用默认分词字典
     seg_dict_file = r""
+
+    # Dict absoluate path
+    # seg_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_seg.txt')
 
     # 不使用打散字典
     break_up_dict_file = r""

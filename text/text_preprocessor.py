@@ -65,6 +65,8 @@ class TextPreprocessor(object):
             for line in src_fp:
                 line = line.strip()
                 seged_line = self.preprocessor.seg_sent(line)
+                # seged_line = self.preprocessor.seg_line_to_single(line)
+                # seged_line = self.preprocessor.seg_line_and_break_up(line)
                 dst_fp.write(seged_line + u'\n')
 
     def seg_file_column(self, src_file, column, dst_file):
@@ -180,11 +182,11 @@ class TextPreprocessor(object):
 
 if __name__ == "__main__":
     pass
-    # Dict absoluate path
-    # seg_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_seg.txt')
-
     # 使用默认分词字典
     seg_dict_file = r""
+
+    # Dict absoluate path
+    # seg_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_seg.txt')
 
     # 不使用打散字典
     break_up_dict_file = r""
