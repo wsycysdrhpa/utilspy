@@ -89,11 +89,14 @@ class CnEnPreprocessor(object):
                 if self.dict_map.get(token, -1) == 1:
                     temp.append(token)
                 else:
-                    # 有中文需要进行打散，其他可能也需要打散，但是为了效率目前跳过
-                    if self.re_cn_phrase.search(token):
-                        temp.extend(self.break_up_token(token, self.dict_map))
-                    else:
-                        temp.append(token)
+                    # 有中文需要进行打散，其他可能也需要打散
+                    # if self.re_cn_phrase.search(token):
+                    #     temp.extend(self.break_up_token(token, self.dict_map))
+                    # else:
+                    #     temp.append(token)
+
+                    temp.extend(self.break_up_token(token, self.dict_map))
+
             sent = u' '.join(temp)
         return sent
 
