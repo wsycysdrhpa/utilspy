@@ -54,25 +54,20 @@ class DictUtil(object):
                     result_dict[line] = None
         return result_dict
 
-    # 将字符串按照长度1, 2, 3, ..., length进行拆分，返回字典
     @staticmethod
-    def string2dict(src_uni):
-        result_dict = {}
-        max_len = len(src_uni)
-        uni_len = 1
-        while uni_len < max_len+1:
-            start = 0
-            end = uni_len
-            while end < max_len+1:
-                if src_uni[start:end] in result_dict:
-                    continue
-                else:
-                    result_dict[src_uni[start:end]] = None
-                start += 1
-                end += 1
-            uni_len += 1
-        # print " ".join(word_dict.keys())
-        return result_dict
+    def cut_str_2_sub_str(src_str):
+        """
+        将字符串按照长度1, 2, 3, ..., length拆分成字串，返回元组
+        :param src_str: 
+        :return: 
+        """
+        results = []
+        # sub_str_len 表示子字符串长度
+        for sub_str_len in range(1, len(src_str) + 1):
+            # offset 表示偏移量
+            for offset in range(len(src_str) - sub_str_len + 1):
+                results.append((src_str[offset:offset + sub_str_len], offset, offset + sub_str_len))
+        return results
 
 
 if __name__ == "__main__":
@@ -88,6 +83,6 @@ if __name__ == "__main__":
     # for ele in result:
     #     print ele
 
-    test_sent = u"好a！"
-    for ele in DictUtil.string2dict(test_sent):
+    test_sent = u"abc"
+    for ele in DictUtil.cut_str_2_sub_str(test_sent):
         print ele
