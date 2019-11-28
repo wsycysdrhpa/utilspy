@@ -116,7 +116,8 @@ class Environment(object):
             return
         configure_file_path = os.path.join(self._working_dir_path, "conf", self._script_name + ".ini")
         if not os.path.exists(configure_file_path):
-            return
+            self._script_name = "main"
+            configure_file_path = os.path.join(self._working_dir_path, "conf", self._script_name + ".ini")
         print u"Overall Configure file path is: " + configure_file_path
         self._configure_parser.read(configure_file_path)
 
