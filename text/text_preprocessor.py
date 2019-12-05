@@ -11,14 +11,18 @@ import re
 import sys
 
 
+CURRENT_FILE_PATH = os.path.abspath(__file__)
+CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
+CURRENT_PROJECT_PATH = os.path.dirname(CURRENT_DIR_PATH)
+
+sys.path.append(CURRENT_PROJECT_PATH)
+
+
 from utilspy.text.cn_en_preprocessor import CnEnPreprocessor
 from utilspy.text.cn_preprocessor import CnPreprocessor
 from utilspy.text.en_preprocessor import EnPreprocessor
 from utilspy.dict.dict_util import DictUtil
 
-
-CURRENT_FILE_PATH = os.path.abspath(__file__)
-CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
 
 # Stop word absoluate path
 STOP_WORD_FILE = os.path.join(CURRENT_DIR_PATH, r'data/stop_word/stop_word.txt')

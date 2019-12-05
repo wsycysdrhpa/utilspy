@@ -8,8 +8,18 @@
 import re
 import logging
 import codecs
+import sys
+import os
 
 import jieba
+
+
+CURRENT_FILE_PATH = os.path.abspath(__file__)
+CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
+CURRENT_PROJECT_PATH = os.path.dirname(CURRENT_DIR_PATH)
+
+sys.path.append(CURRENT_PROJECT_PATH)
+
 
 from utilspy.text.cn_preprocessor import CnPreprocessor
 from utilspy.text.en_preprocessor import EnPreprocessor
