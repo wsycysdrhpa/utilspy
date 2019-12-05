@@ -14,8 +14,9 @@ import sys
 CURRENT_FILE_PATH = os.path.abspath(__file__)
 CURRENT_DIR_PATH = os.path.dirname(CURRENT_FILE_PATH)
 CURRENT_PROJECT_PATH = os.path.dirname(CURRENT_DIR_PATH)
+PARENT_PROJECT_PATH = os.path.dirname(CURRENT_PROJECT_PATH)
 
-sys.path.append(CURRENT_PROJECT_PATH)
+sys.path.append(PARENT_PROJECT_PATH)
 
 
 from utilspy.text.cn_en_preprocessor import CnEnPreprocessor
