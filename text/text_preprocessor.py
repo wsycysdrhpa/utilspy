@@ -48,33 +48,38 @@ class TextPreprocessor(object):
         # [A-Za-z0-9_]
         self.re_en_and_num = re.compile(u"\w+")
 
+    def seg_line(self, line):
+        return self.preprocessor.seg_sent(line)
+
     # 按字切分
     def seg_line_to_single(self, line):
         return self.preprocessor.seg_sent_to_single(line)
-
-    def seg_line(self, line):
-        return self.preprocessor.seg_sent(line)
 
     # only support ce
     def seg_line_and_break_up(self, line):
         return self.preprocessor.seg_sent_and_break_up(line)
 
-    def seg_file_line(self, src_file, dst_file):
+    def seg_file_line(self, src_file, dst_file, mode="seg_line"):
         with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
                 codecs.open(dst_file, 'wb') as dst_fp:
             for line in src_fp:
                 line = line.strip()
-                seged_line = self.seg_line(line)
-                # seged_line = self.seg_line_to_single(line)
-                # seged_line = self.seg_line_and_break_up(line)
+                seged_line = u""
+                if "seg_line" == mode:
+                    seged_line = self.seg_line(line)
+                if "seg_line_to_single" == mode:
+                    seged_line = self.seg_line_to_single(line)
+                if "seg_line_and_break_up" == mode:
+                    seged_line = self.seg_line_and_break_up(line)
                 dst_fp.write(seged_line + u'\n')
 
-    def seg_file_column(self, src_file, column, dst_file):
+    def seg_file_column(self, src_file, dst_file, column, mode="seg_line"):
         """
         # 列之间以tab分割, 切割完成后与其他列拼接
         :param src_file: 
         :param column: 选取某一列，0为第一列
         :param dst_file: 
+        :param mode: 
         :return: 
         """
         with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
@@ -82,7 +87,12 @@ class TextPreprocessor(object):
             for line in src_fp:
                 line = line.strip()
                 elements = line.split(u'\t')
-                elements[column] = self.seg_line(elements[column].strip())
+                if "seg_line" == mode:
+                    elements[column] = self.seg_line(elements[column].strip())
+                if "seg_line_to_single" == mode:
+                    elements[column] = self.seg_line_to_single(elements[column].strip())
+                if "seg_line_and_break_up" == mode:
+                    elements[column] = self.seg_line_and_break_up(elements[column].strip())
                 line = u'\t'.join(elements).strip()
                 dst_fp.write(line + u'\n')
 
@@ -182,17 +192,11 @@ class TextPreprocessor(object):
 
 if __name__ == "__main__":
     pass
-    # 使用默认分词字典
+    # 空将使用默认分词字典，非空则使用自定义分词词典
     seg_dict_file = r""
 
-    # Dict absoluate path
-    # seg_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_seg.txt')
-
-    # 不使用打散字典
+    # 空将不使用打散字典，非空则使用自定义打散词典
     break_up_dict_file = r""
-
-    # 使用打散字典
-    # break_up_dict_file = os.path.join(CURRENT_DIR_PATH, 'data/dict/lenovo/words_for_lm_yd.txt')
 
     text_preprocessor = TextPreprocessor('cn_en', args=(seg_dict_file, 'set', True, False,
                                                         break_up_dict_file))
@@ -213,14 +217,12 @@ if __name__ == "__main__":
     line = text_preprocessor.seg_line_and_break_up(line)
     print line
 
-    # text_preprocessor.seg_file_line(r'data/test/test_in.txt', r'data/test/test_seg_file_out.txt')
-
     # result = text_preprocessor.del_sent_stop_word(test_sent, DictUtil.file2dict(r'data/stop_word/stop_word.txt'))
     # print result
 
-    # text_preprocessor.del_file_stop_word(r'data/test/test_seg_file_out.txt', r'data/test/test_del_stop_out.txt')
+    # text_preprocessor.del_file_stop_word(r'', r'')
 
-    # text_preprocessor.del_blank_line(r'data/test/test_del_stop_out.txt', r'data/test/test_del_blank_out.txt')
+    # text_preprocessor.del_blank_line(r'', r'')
 
     # in_file = r""
     # out_file = r""
@@ -229,3 +231,11 @@ if __name__ == "__main__":
     # in_file = r""
     # out_file = r""
     # text_preprocessor.rev_seq2file(in_file, out_file)
+
+    # in_file = r""
+    # out_file = r""
+    # text_preprocessor.seg_file_line(in_file, out_file, mode="seg_line")
+
+    # in_file = r""
+    # out_file = r""
+    # text_preprocessor.seg_file_column(in_file, out_file, 0, mode="seg_line")
