@@ -203,19 +203,19 @@ if __name__ == "__main__":
     # text_preprocessor = TextPreprocessor('cn', args=(seg_dict_file, 'set', False))
     # text_preprocessor = TextPreprocessor('en', args=(True,))
 
-    test_sent = u"I've got it. 这个非常好，!中国科学院自动化研究所。'Yes, ma'am.' the-waiter said.'好Yes, " \
-                u"3 is可以'￥21的QUchu'所有的非中文标记！！! doctors'.' 'Yes, it is doctors'' he said."
-    print test_sent
+    # test_sent = u"I've got it. 这个非常好，!中国科学院自动化研究所。'Yes, ma'am.' the-waiter said.'好Yes, " \
+    #             u"3 is可以'￥21的QUchu'所有的非中文标记！！! doctors'.' 'Yes, it is doctors'' he said."
+    # print test_sent
 
-    seged_test_sent = text_preprocessor.seg_line(test_sent)
-    print seged_test_sent
+    # seged_test_sent = text_preprocessor.seg_line(test_sent)
+    # print seged_test_sent
 
-    single_seged_test_sent = text_preprocessor.seg_line_to_single(test_sent)
-    print single_seged_test_sent
+    # single_seged_test_sent = text_preprocessor.seg_line_to_single(test_sent)
+    # print single_seged_test_sent
 
-    line = u"中国科学院自动化研究所是21三体综合症的研究基地3aab所长不是我helloworld每周一好的啊"
-    line = text_preprocessor.seg_line_and_break_up(line)
-    print line
+    # line = u"中国科学院自动化研究所是21三体综合症的研究基地3aab所长不是我helloworld每周一好的啊"
+    # line = text_preprocessor.seg_line_and_break_up(line)
+    # print line
 
     # result = text_preprocessor.del_sent_stop_word(test_sent, DictUtil.file2dict(r'data/stop_word/stop_word.txt'))
     # print result
