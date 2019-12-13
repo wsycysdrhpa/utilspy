@@ -80,7 +80,7 @@ class TextPreprocessor(object):
 
     def seg_file_column(self, src_file, dst_file, column, mode="seg_line"):
         """
-        # 列之间以tab分割, 切割完成后与其他列拼接
+        # 列之间需要以tab分割, 切割完成后与其他列拼接
         :param src_file: 
         :param column: 选取某一列，0为第一列
         :param dst_file: 
@@ -92,13 +92,17 @@ class TextPreprocessor(object):
             for line in src_fp:
                 line = line.strip()
                 elements = line.split(u'\t')
-                if "seg_line" == mode:
-                    elements[column] = self.seg_line(elements[column].strip())
-                if "seg_line_to_single" == mode:
-                    elements[column] = self.seg_line_to_single(elements[column].strip())
-                if "seg_line_and_break_up" == mode:
-                    elements[column] = self.seg_line_and_break_up(elements[column].strip())
-                line = u'\t'.join(elements).strip()
+                if len(elements) >= column + 1:
+                    if "seg_line" == mode:
+                        elements[column] = self.seg_line(elements[column].strip())
+                    if "seg_line_to_single" == mode:
+                        elements[column] = self.seg_line_to_single(elements[column].strip())
+                    if "seg_line_and_break_up" == mode:
+                        elements[column] = self.seg_line_and_break_up(elements[column].strip())
+                # else:
+                #     elements.append(u"")
+
+                line = u'\t'.join(elements)
                 dst_fp.write(line + u'\n')
 
     @staticmethod
@@ -241,6 +245,6 @@ if __name__ == "__main__":
     # out_file = r""
     # text_preprocessor.seg_file_line(in_file, out_file, mode="seg_line")
 
-    # in_file = r""
-    # out_file = r""
-    # text_preprocessor.seg_file_column(in_file, out_file, 0, mode="seg_line")
+    in_file = r""
+    out_file = r""
+    text_preprocessor.seg_file_column(in_file, out_file, 1, mode="seg_line")
