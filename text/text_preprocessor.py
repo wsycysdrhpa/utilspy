@@ -248,3 +248,4 @@ if __name__ == "__main__":
     in_file = r""
     out_file = r""
     text_preprocessor.seg_file_column(in_file, out_file, 1, mode="seg_line")
+1
