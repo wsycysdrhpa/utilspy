@@ -43,9 +43,12 @@ class TransformCN(Transform):
     def transform(self, line):
         if not self.re_pure_num.search(line):
             return line
-        line = self.trans_date(line)
-        line = self.trans_units(line)
-        line = self.trans_number(line)
+        try:
+            line = self.trans_date(line)
+            line = self.trans_units(line)
+            line = self.trans_number(line)
+        except ValueError, e:
+            print ValueError, e, line
         return line
 
     # 日期转换
@@ -70,5 +73,5 @@ if __name__ == "__main__":
     pass
     run = TransformCN(r"rules/cn/cn_units", r"rules/cn/cn_units_need_change", r"rules/cn/cn_num_words_dict")
     # bug 后面包含前面部分如：500m 1500m
-    s = u"2018-12-32 1234年美国51区456.1234北京-001理工大学是1座好城市3d哈 98-0987这台电脑卖￥-4329.5，100% 32℃，有14km，500m, 09282625"
+    s = u"2018-12-32 1234年美国51区456.1234北京-001理工大学是1座好城市3d哈 98-0987这台电脑卖￥-4329.5，100% 32℃，有14km，500m, 09282625 1500m"
     print run.transform(s)
