@@ -17,3 +17,11 @@ git clone https://github.com/wsycysdrhpa/utilspy.git;
 
 备注：
 多机部署时直接拷贝到工程下更加方便，不需要每台机器都下载工具
+
+
+版本支持
+python3
+chinese_text_normalization
+
+python2
+其他
