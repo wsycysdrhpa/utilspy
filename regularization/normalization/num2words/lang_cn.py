@@ -5,8 +5,8 @@
 # @description:
 
 
-from tools.an2cn import an2cn
-from base import Num2Words
+from utilspy.regularization.normalization.num2words.tools.an2cn import an2cn
+from utilspy.regularization.normalization.num2words.base import Num2Words
 
 
 class Num2Words_CN(Num2Words):

@@ -14,8 +14,8 @@
 #  6.其余数字转成数值型的
 
 import re
-from base import Transform
-from num2words.lang_en import Num2Words_EN
+from utilspy.regularization.normalization.base import Transform
+from utilspy.regularization.normalization.num2words.lang_en import Num2Words_EN
 
 
 class TransformEN(Transform):
@@ -105,4 +105,5 @@ if __name__ == "__main__":
     pass
     run = TransformEN(r"rules/en/en_units", r"rules/en/en_units_need_change", r"rules/en/en_num_words_dict")
     s = u"3d $ twenty thousand 3-d and 1 three 34-39287-98-0987 Today is 32℃, 80% of the 45th students have toys. This computer sales $999 3d"
-    print run.transform(s)
+    print(s)
+    print(run.transform(s))

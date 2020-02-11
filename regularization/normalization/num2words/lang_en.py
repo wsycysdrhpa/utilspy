@@ -6,8 +6,8 @@
 
 
 import re
-from tools.an2en import Number
-from base import Num2Words
+from utilspy.regularization.normalization.num2words.tools.an2en import Number
+from utilspy.regularization.normalization.num2words.base import Num2Words
 
 
 class Num2Words_EN(Num2Words):
@@ -22,5 +22,6 @@ class Num2Words_EN(Num2Words):
         if self.re_point.search(num):
             num = float(num)
         else:
-            num = long(num)
+            # num = long(num)
+            pass
         return Number(num).convert_to_words()

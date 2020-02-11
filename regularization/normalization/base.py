@@ -11,7 +11,7 @@
 import re
 import codecs
 
-from num2words.lang_cn import Num2Words_CN
+from utilspy.regularization.normalization.num2words.lang_cn import Num2Words_CN
 
 
 class Transform(object):
@@ -115,7 +115,7 @@ class Transform(object):
         try:
             line = Transform.re_special_numberical_str.sub(self._trans_special_numberical_str, line)
         except Exception as e:
-            print "Error line: ", line
+            print("Error line: ", line)
             raise e
         line = Transform.re_pure_num.sub(self._trans_numberical_value, line)
         return line
@@ -148,4 +148,4 @@ class Transform(object):
 
     # 加载含有数字的词典
     def load_num_words(self, num_words_file):
-        return [word.strip() for word in open(num_words_file).readlines()]
+        return [word.strip() for word in codecs.open(num_words_file, "rb", "utf-8").readlines()]

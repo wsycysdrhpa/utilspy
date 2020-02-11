@@ -4,8 +4,8 @@
 from os.path import dirname
 from os.path import join
 
-from trans_cn import TransformCN
-from trans_en import TransformEN
+from utilspy.regularization.normalization.trans_cn import TransformCN
+from utilspy.regularization.normalization.trans_en import TransformEN
 
 
 class TextNormalization(object):

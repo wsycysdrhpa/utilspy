@@ -13,13 +13,13 @@
 import re
 import sys
 
-from base import Transform
-from num2words.lang_cn import Num2Words_CN
+from utilspy.regularization.normalization.base import Transform
+from utilspy.regularization.normalization.num2words.lang_cn import Num2Words_CN
 
 
 # Set python default encode
-reload(sys)
-sys.setdefaultencoding("utf-8")
+# reload(sys)
+# sys.setdefaultencoding("utf-8")
 
 
 class TransformCN(Transform):
@@ -47,8 +47,8 @@ class TransformCN(Transform):
             line = self.trans_date(line)
             line = self.trans_units(line)
             line = self.trans_number(line)
-        except ValueError, e:
-            print ValueError, e, line
+        except ValueError as e:
+            print(ValueError, e, line)
         return line
 
     # 日期转换
@@ -72,6 +72,8 @@ class TransformCN(Transform):
 if __name__ == "__main__":
     pass
     run = TransformCN(r"rules/cn/cn_units", r"rules/cn/cn_units_need_change", r"rules/cn/cn_num_words_dict")
-    # bug 后面包含前面部分如：500m 1500m
-    s = u"2018-12-32 1234年美国51区456.1234北京-001理工大学是1座好城市3d哈 98-0987这台电脑卖￥-4329.5，100% 32℃，有14km，500m, 09282625 1500m"
-    print run.transform(s)
+    s = u"2018-12-32 1234年美国51区456.1234北京-001理工大学是1座好城市3d哈 98-0987这台电脑卖￥-4329.5，100% 32℃，有14km，500m, 09282625"
+    # BUG 后面包含前面部分如：500m 1500m
+    # s = u"2018-12-32 1234年美国51区456.1234北京-001理工大学是1座好城市3d哈 98-0987这台电脑卖￥-4329.5，100% 32℃，有14km，500m, 09282625 1500m"
+    print(s)
+    print(run.transform(s))

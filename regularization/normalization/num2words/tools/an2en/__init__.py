@@ -31,12 +31,12 @@ class Number:
     def __init__(self, number):
         self.number = number
         if self.number is None:
-            print "Warning. You enter nothing."
+            print("Warning. You enter nothing.")
         else:
             try:
                 int(self.number)
             except TypeError:
-                print "Error. You didn't enter an interger."
+                print("Error. You didn't enter an interger.")
 
     def get_order(self, number):
         order = 0

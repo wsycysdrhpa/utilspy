@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# @update: '2017/10/31'
+# @update: '20120/02/11'
 # @description:
 
 
@@ -12,7 +12,7 @@ import re
 class Word2Num(object):
     def __init__(self):
         # 匹配数字，小数部分都是0
-        self.re_decimals_end_0 = re.compile(ur'^[\d]+\.[0]*$')
+        self.re_decimals_end_0 = re.compile(r'^[\d]+\.[0]*$')
         # 数字字典
         self.numerals_dict = {
             u'〇': 0,
@@ -165,48 +165,48 @@ class Word2Num(object):
 if __name__ == "__main__":
     pass
     word2num = Word2Num()
-    print word2num.word2num(u"十"), u"十"
-    print word2num.word2num(u"十八"), u"十八"
-    print word2num.word2num(u"十九"), u"十九"
-    print word2num.word2num(u"二十一"), u"二十一"
-    print word2num.word2num(u"十一"), u"十一"
-    print word2num.word2num(u"一百"), u"一百"
-    print word2num.word2num(u"两千七"), u"两千七"
-    print word2num.word2num(u"一万零五"), u"一万零五"
-    print word2num.word2num(u"十万零三千六百零九"), u"十万零三千六百零九"
-    print word2num.word2num(u"两万一"), u"两万一"
-    print word2num.word2num(u"一亿五"), u"一亿五"
-    print word2num.word2num(u"两千"), u"两千"
-    print word2num.word2num(u"两千三百万"), u"两千三百万"
-    print word2num.word2num(u"一百二十"), u"一百二十"
-    print word2num.word2num(u"二十五"), u"二十五"
-    print word2num.word2num(u"九"), u"九"
-    print word2num.word2num(u"一百二十三"), u"一百二十三"
-    print word2num.word2num(u"一千二百零三"), u"一千二百零三"
-    print word2num.word2num(u"一万一千一百零一"), u"一万一千一百零一"
-    print word2num.word2num(u"一百二十三万四千五百六十七"), u"一百二十三万四千五百六十七"
-    print word2num.word2num(u"一千一百二十三万四千五百六十七"), u"一千一百二十三万四千五百六十七"
-    print word2num.word2num(u"一亿一千一百二十三万四千五百六十七"), u"一亿一千一百二十三万四千五百六十七"
-    print word2num.word2num(u"一百零二亿五千零一万零一千零三十八"), u"一百零二亿五千零一万零一千零三十八"
-    print word2num.word2num(u"一千一百一十一亿一千一百二十三万四千五百六十七"), u"一千一百一十一亿一千一百二十三万四千五百六十七"
-    print word2num.word2num(u"一兆一千一百一十一亿一千一百二十三万四千五百六十七"), u"一兆一千一百一十一亿一千一百二十三万四千五百六十七"
-    print word2num.word2num(u"四一零"), u"四一零"
-    print word2num.word2num(u"四幺零"), u"四幺零"
+    print(word2num.word2num(u"十"), u"十")
+    print(word2num.word2num(u"十八"), u"十八")
+    print(word2num.word2num(u"十九"), u"十九")
+    print(word2num.word2num(u"二十一"), u"二十一")
+    print(word2num.word2num(u"十一"), u"十一")
+    print(word2num.word2num(u"一百"), u"一百")
+    print(word2num.word2num(u"两千七"), u"两千七")
+    print(word2num.word2num(u"一万零五"), u"一万零五")
+    print(word2num.word2num(u"十万零三千六百零九"), u"十万零三千六百零九")
+    print(word2num.word2num(u"两万一"), u"两万一")
+    print(word2num.word2num(u"一亿五"), u"一亿五")
+    print(word2num.word2num(u"两千"), u"两千")
+    print(word2num.word2num(u"两千三百万"), u"两千三百万")
+    print(word2num.word2num(u"一百二十"), u"一百二十")
+    print(word2num.word2num(u"二十五"), u"二十五")
+    print(word2num.word2num(u"九"), u"九")
+    print(word2num.word2num(u"一百二十三"), u"一百二十三")
+    print(word2num.word2num(u"一千二百零三"), u"一千二百零三")
+    print(word2num.word2num(u"一万一千一百零一"), u"一万一千一百零一")
+    print(word2num.word2num(u"一百二十三万四千五百六十七"), u"一百二十三万四千五百六十七")
+    print(word2num.word2num(u"一千一百二十三万四千五百六十七"), u"一千一百二十三万四千五百六十七")
+    print(word2num.word2num(u"一亿一千一百二十三万四千五百六十七"), u"一亿一千一百二十三万四千五百六十七")
+    print(word2num.word2num(u"一百零二亿五千零一万零一千零三十八"), u"一百零二亿五千零一万零一千零三十八")
+    print(word2num.word2num(u"一千一百一十一亿一千一百二十三万四千五百六十七"), u"一千一百一十一亿一千一百二十三万四千五百六十七")
+    print(word2num.word2num(u"一兆一千一百一十一亿一千一百二十三万四千五百六十七"), u"一兆一千一百一十一亿一千一百二十三万四千五百六十七")
+    print(word2num.word2num(u"四一零"), u"四一零")
+    print(word2num.word2num(u"四幺零"), u"四幺零")
 
-    print
-    print word2num.word2num(u"一二三零六"), u"一二三零六"
-    print word2num.word2num(u"幺二三零六"), u"幺二三零六"
-    print word2num.word2num(u"七八九"), u"七八九"
+    print()
+    print(word2num.word2num(u"一二三零六"), u"一二三零六")
+    print(word2num.word2num(u"幺二三零六"), u"幺二三零六")
+    print(word2num.word2num(u"七八九"), u"七八九")
 
     # 以下情况无法成功转换
-    print
-    print word2num.word2num(u"七八九十"), u"七八九十"
-    print word2num.word2num(u"七八九十十一"), u"七八九十十一"
+    print()
+    print(word2num.word2num(u"七八九十"), u"七八九十")
+    print(word2num.word2num(u"七八九十十一"), u"七八九十十一")
 
-    # print word2num.word2num(u"两毛七"), u"两毛七"
-    # print word2num.word2num(u"两毛七分"), u"两毛七分"
-    # print word2num.word2num(u"两千三百万零两毛七分"), u"两千三百万零两毛七分"
-    # print word2num.word2num(u"两千三百万两毛七分"), u"两千三百万两毛七分"
-    # print word2num.word2num(u"一块两毛"), u"一块两毛"
-    # print word2num.word2num(u"一块二"), u"一块二"
-    # print word2num.word2num(u"一元两"), u"一元两"
+    # print(word2num.word2num(u"两毛七"), u"两毛七")
+    # print(word2num.word2num(u"两毛七分"), u"两毛七分")
+    # print(word2num.word2num(u"两千三百万零两毛七分"), u"两千三百万零两毛七分")
+    # print(word2num.word2num(u"两千三百万两毛七分"), u"两千三百万两毛七分")
+    # print(word2num.word2num(u"一块两毛"), u"一块两毛")
+    # print(word2num.word2num(u"一块二"), u"一块二")
+    # print(word2num.word2num(u"一元两"), u"一元两")
