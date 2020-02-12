@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# @update: '2014/4/10'
+# @update: '2020/02/12'
 # @description:
 
 
 import os
 import logging
-from ConfigParser import ConfigParser
-from ConfigParser import NoSectionError
+from configparser import ConfigParser
+from configparser import NoSectionError
 
 from utilspy.log.logger import Logger
 
@@ -57,7 +57,7 @@ class Environment(object):
         try:
             value = self._configure_parser.get(section, key)
             return value
-        except NoSectionError, e:
+        except NoSectionError as e:
             LOGGER.error(e.message)
             return None
 
@@ -85,7 +85,7 @@ class Environment(object):
         start_file_path = start_file_path.replace("\\", "/")
         file_name_parts = start_file_path.split('/')
         if not file_name_parts:
-            LOGGER.error(u"启动文件输入参数错误，输入的不是完整的文件名: " + start_file_path)
+            LOGGER.error("启动文件输入参数错误，输入的不是完整的文件名: " + start_file_path)
             return None, None
         script_name = file_name_parts[-1]
         if "." in script_name:
@@ -105,7 +105,7 @@ class Environment(object):
                 Logger.load_configure(logger_file_path)
             else:
                 Logger.load_configure()
-        except NoSectionError, e:
+        except NoSectionError as e:
             Logger.load_configure()
             LOGGER.warning(e.message)
 
@@ -118,13 +118,13 @@ class Environment(object):
         if not os.path.exists(configure_file_path):
             self._script_name = "main"
             configure_file_path = os.path.join(self._working_dir_path, "conf", self._script_name + ".ini")
-        print u"Overall Configure file path is: " + configure_file_path
+        print("Overall Configure file path is: " + configure_file_path)
         self._configure_parser.read(configure_file_path)
 
     @staticmethod
     def _set_working_path(work_dir_path):
         os.chdir(work_dir_path)
-        print u"Working dir is: " + work_dir_path
+        print("Working dir is: " + work_dir_path)
 
 
 if __name__ == "__main__":
@@ -133,8 +133,8 @@ if __name__ == "__main__":
 
     Environment.get_instance(load_user_configure=False).init(CURRENT_FILE_PATH, 3)
 
-    LOGGER.debug(u'hello')
-    LOGGER.info(u'hello')
-    LOGGER.warning(u'hello')
-    LOGGER.error(u'hello')
-    LOGGER.critical(u'hello')
+    LOGGER.debug('hello')
+    LOGGER.info('hello')
+    LOGGER.warning('hello')
+    LOGGER.error('hello')
+    LOGGER.critical('hello')

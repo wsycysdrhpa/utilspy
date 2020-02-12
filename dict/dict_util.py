@@ -1,9 +1,8 @@
 # -*- coding:utf-8 -*-
 
-
 # @version: 1.0
-# @author: renhe
-# @date: '14-7-11'
+# @author: renhe, arain
+# @date: '20-02-12'
 
 
 import json
@@ -24,7 +23,7 @@ class DictUtil(object):
 
     @staticmethod
     def print_dict(src_dict):
-        print DictUtil.to_string(src_dict)
+        print(DictUtil.to_string(src_dict))
 
     @staticmethod
     def to_line(src_dict, with_line_separator=True):
@@ -72,17 +71,17 @@ class DictUtil(object):
 
 if __name__ == "__main__":
     pass
-    d = {u'a': 1, u'b': 2, u'c': 3}
+    d = {'a': 1, 'b': 2, 'c': 3}
     s = DictUtil.to_string(d)
-    print s, type(s)
+    print(s, type(s))
 
     ln = DictUtil.to_line(d, with_line_separator=True)
-    print ln, type(ln)
+    print(ln, type(ln))
 
     # result = DictUtil.file2dict(r'../text/data/stop_word/stop_word.txt')
     # for ele in result:
     #     print ele
 
-    test_sent = u"abc"
+    test_sent = "abc"
     for ele in DictUtil.cut_str_2_sub_str(test_sent):
-        print ele
+        print(ele)

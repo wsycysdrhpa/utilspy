@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# @update: '2018/1/30'
+# @update: '2020/2/12'
 # @description:
 
 
@@ -11,9 +11,9 @@ import codecs
 
 class TextFilter(object):
     def __init__(self):
-        self.re_zh = re.compile(u'[\u4e00-\u9fa5]')
-        self.re_en = re.compile(u'[a-zA-Z]')
-        self.re_num = re.compile(u'[0-9]')
+        self.re_zh = re.compile('[\u4e00-\u9fa5]')
+        self.re_en = re.compile('[a-zA-Z]')
+        self.re_num = re.compile('[0-9]')
 
     def run(self, src_file, dst_file):
         with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
@@ -24,26 +24,26 @@ class TextFilter(object):
                 # line = self.filt_line_num(line)
                 line = self.keep_line_ce(line)
                 if line:
-                    dst_fp.write(line + u'\n')
+                    dst_fp.write(line + '\n')
 
     # 滤除包含中文的句子
     def filt_line_none_cn(self, line):
         if self.re_zh.search(line):
-            return u''
+            return ''
         else:
             return line
 
     # 滤除包含英文的句子
     def filt_line_en(self, line):
         if self.re_en.search(line):
-            return u''
+            return ''
         else:
             return line
 
     # 滤除包含数字的句子
     def filt_line_num(self, line):
         if self.re_num.search(line):
-            return u''
+            return ''
         else:
             return line
 
@@ -52,13 +52,12 @@ class TextFilter(object):
         if self.re_zh.search(line) and self.re_en.search(line):
             return line
         else:
-            return u''
+            return ''
 
 
 if __name__ == "__main__":
     pass
     text_filter = TextFilter()
-    src = r'../test/levoice.txt'
-    # dst = r'../test/levoice_pure_cn.txt'
-    dst = r'../test/levoice_mix_ce.txt'
+    src = r''
+    dst = r''
     text_filter.run(src, dst)

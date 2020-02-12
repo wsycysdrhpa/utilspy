@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# @update: '2018/2/26'
+# @update: '2020/02/12'
 # @description: 
 
 
@@ -34,20 +34,20 @@ class CnEnPreprocessor(object):
         self.lower = lower
         # jieba.cut方法是否开启HMM，Ture or False，默认不开启
         self.HMM = HMM
-        self.re_useless = re.compile(u'[^0-9a-zA-Z\'\u4e00-\u9fa5]')
-        self.re_muti_space = re.compile(u'\s+')
-        self.re_cn_phrase = re.compile(u'[\u4e00-\u9fa5]+')
+        self.re_useless = re.compile('[^0-9a-zA-Z\'\u4e00-\u9fa5]')
+        self.re_muti_space = re.compile('\s+')
+        self.re_cn_phrase = re.compile('[\u4e00-\u9fa5]+')
         self.cn_preprocessor = CnPreprocessor()
         self.en_preprocessor = EnPreprocessor()
         if seg_dict:
             if flag == 'load':
                 # load user dict and use jieba dict
                 jieba.load_userdict(seg_dict)
-                LOGGER.info(u"Load user dict and use jieba default dict, successfully set")
+                LOGGER.info("Load user dict and use jieba default dict, successfully set")
             elif flag == 'set':
                 # Set user dict and do not use jieba dict
                 jieba.set_dictionary(seg_dict)
-                LOGGER.info(u"Set user dict and do not use jieba default dict, successfully set")
+                LOGGER.info("Set user dict and do not use jieba default dict, successfully set")
             else:
                 pass
         if break_up_dict:
@@ -59,36 +59,36 @@ class CnEnPreprocessor(object):
         if self.lower:
             row_sent = row_sent.lower()
         sent = row_sent.strip()
-        sent = self.repl_useless_character(sent, u' ')
+        sent = self.repl_useless_character(sent, ' ')
         # 处理中文，将匹配到的中文短语进行分词，为了和其他字符分割，前后添加空格
         sent = self.re_cn_phrase.sub(self._cut_to_single_and_add_blank, sent)
         # 处理英文
-        words = sent.split(u' ')
+        words = sent.split(' ')
         for i in range(len(words)):
             if self.en_preprocessor.noun_plural_possessive.match(words[i]):
                 continue
-            words[i] = words[i].strip(u'\'')
-        sent = u' '.join(words)
+            words[i] = words[i].strip('\'')
+        sent = ' '.join(words)
         # 去除多余空格
-        sent = self.re_muti_space.sub(u' ', sent).strip()
+        sent = self.re_muti_space.sub(' ', sent).strip()
         return sent
 
     def seg_sent(self, row_sent):
         if self.lower:
             row_sent = row_sent.lower()
         sent = row_sent.strip()
-        sent = self.repl_useless_character(sent, u' ')
+        sent = self.repl_useless_character(sent, ' ')
         # 处理中文，将匹配到的中文短语进行分词，为了和其他字符分割，前后添加空格
         sent = self.re_cn_phrase.sub(self._cut_and_add_blank, sent)
         # 处理英文
-        words = sent.split(u' ')
+        words = sent.split(' ')
         for i in range(len(words)):
             if self.en_preprocessor.noun_plural_possessive.match(words[i]):
                 continue
-            words[i] = words[i].strip(u'\'')
-        sent = u' '.join(words)
+            words[i] = words[i].strip('\'')
+        sent = ' '.join(words)
         # 去除多余空格
-        sent = self.re_muti_space.sub(u' ', sent).strip()
+        sent = self.re_muti_space.sub(' ', sent).strip()
         return sent
 
     def seg_sent_and_break_up(self, row_sent):
@@ -109,22 +109,22 @@ class CnEnPreprocessor(object):
                     # 无论token是否包含中文，都进行打散
                     # temp.extend(self.break_up_token(token, self.dict_map))
 
-            sent = u' '.join(temp)
+            sent = ' '.join(temp)
         return sent
 
     def _cut_and_add_blank(self, matched):
         src_uni = matched.group()
-        dst_uni = u' '.join(jieba.cut(src_uni, HMM=self.HMM))
-        dst_uni = u' %s ' % dst_uni
+        dst_uni = ' '.join(jieba.cut(src_uni, HMM=self.HMM))
+        dst_uni = ' %s ' % dst_uni
         return dst_uni
 
     def _cut_to_single_and_add_blank(self, matched):
         src_uni = matched.group()
         dst_uni = self.cn_preprocessor.seg_sent_to_single(src_uni)
-        dst_uni = u' %s ' % dst_uni
+        dst_uni = ' %s ' % dst_uni
         return dst_uni
 
-    def repl_useless_character(self, uni_sent, repl=u' '):
+    def repl_useless_character(self, uni_sent, repl=' '):
         """
         替换unicode字符串中的无效字符
         :param uni_sent: 输入unicode字符串
@@ -133,7 +133,7 @@ class CnEnPreprocessor(object):
         """
         sent = self.re_useless.sub(repl, uni_sent)
         # 去除多余空格
-        sent = self.re_muti_space.sub(u' ', sent).strip()
+        sent = self.re_muti_space.sub(' ', sent).strip()
         return sent
 
     def break_up_token(self, word, dict_map):
@@ -191,19 +191,19 @@ if __name__ == "__main__":
     cn_en_preprocessor = CnEnPreprocessor(seg_dict=seg_dict_file, flag='set', lower=True, HMM=False,
                                           break_up_dict=break_up_dict_file)
 
-    test_sent = u"I've got it. 这个非常好，!中国科学院自动化研究所3d全民k歌。'Yes, ma'am.' the-waiter said.'好Yes, " \
-                u"3 is可以'￥21的QUchu'所有的非中文标记！！! doctors'.' 'Yes, it is doctors'' he said."
-    print test_sent
+    test_sent = "I've got it. 这个非常好，!中国科学院自动化研究所3d全民k歌。'Yes, ma'am.' the-waiter said.'好Yes, " \
+                "3 is可以'￥21的QUchu'所有的非中文标记！！! doctors'.' 'Yes, it is doctors'' he said."
+    print(test_sent)
 
     test_sent_2 = cn_en_preprocessor.repl_useless_character(test_sent)
-    print test_sent_2
+    print(test_sent_2)
 
     test_sent_3 = cn_en_preprocessor.seg_sent(test_sent)
-    print test_sent_3
+    print(test_sent_3)
 
     test_sent_4 = cn_en_preprocessor.seg_sent_to_single(test_sent)
-    print test_sent_4
+    print(test_sent_4)
 
-    line = u"中国科学院自动化研究所是21三体综合症的研究基地3aab所长不是我helloworld每周一好的啊"
+    line = "中国科学院自动化研究所是21三体综合症的研究基地3aab所长不是我helloworld每周一好的啊"
     line = cn_en_preprocessor.seg_sent_and_break_up(line)
-    print line
+    print(line)

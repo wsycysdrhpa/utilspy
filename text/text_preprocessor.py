@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# @update: '2018/2/24'
+# @update: '2020/02/12'
 # @description: 
 
 
@@ -9,6 +9,7 @@ import os
 import codecs
 import re
 import sys
+import importlib
 
 
 CURRENT_FILE_PATH = os.path.abspath(__file__)
@@ -29,7 +30,7 @@ from utilspy.dict.dict_util import DictUtil
 STOP_WORD_FILE = os.path.join(CURRENT_DIR_PATH, r'data/stop_word/stop_word.txt')
 
 # Set python default encode
-reload(sys)
+importlib.reload(sys)
 sys.setdefaultencoding("utf-8")
 
 
@@ -49,9 +50,9 @@ class TextPreprocessor(object):
             # args=(True,)
             self.preprocessor = EnPreprocessor(lower=args[0])
 
-        self.re_space = re.compile(u"\s")
+        self.re_space = re.compile("\s")
         # [A-Za-z0-9_]
-        self.re_en_and_num = re.compile(u"\w+")
+        self.re_en_and_num = re.compile("\w+")
 
     def seg_line(self, line):
         return self.preprocessor.seg_sent(line)
@@ -69,14 +70,14 @@ class TextPreprocessor(object):
                 codecs.open(dst_file, 'wb') as dst_fp:
             for line in src_fp:
                 line = line.strip()
-                seged_line = u""
+                seged_line = ""
                 if "seg_line" == mode:
                     seged_line = self.seg_line(line)
                 if "seg_line_to_single" == mode:
                     seged_line = self.seg_line_to_single(line)
                 if "seg_line_and_break_up" == mode:
                     seged_line = self.seg_line_and_break_up(line)
-                dst_fp.write(seged_line + u'\n')
+                dst_fp.write(seged_line + '\n')
 
     def seg_file_column(self, src_file, dst_file, column, mode="seg_line"):
         """
@@ -91,7 +92,7 @@ class TextPreprocessor(object):
                 codecs.open(dst_file, 'wb') as dst_fp:
             for line in src_fp:
                 line = line.strip()
-                elements = line.split(u'\t')
+                elements = line.split('\t')
                 if len(elements) >= column + 1:
                     if "seg_line" == mode:
                         elements[column] = self.seg_line(elements[column].strip())
@@ -102,8 +103,8 @@ class TextPreprocessor(object):
                 # else:
                 #     elements.append(u"")
 
-                line = u'\t'.join(elements)
-                dst_fp.write(line + u'\n')
+                line = '\t'.join(elements)
+                dst_fp.write(line + '\n')
 
     @staticmethod
     def del_blank_line(src_file, dst_file):
@@ -112,7 +113,7 @@ class TextPreprocessor(object):
             for line in src_fp:
                 line = line.strip()
                 if line:
-                    dst_fp.write(line + u'\n')
+                    dst_fp.write(line + '\n')
 
     def del_file_stop_word(self, seged_file, del_stop_seged_file, stop_word_file=STOP_WORD_FILE):
         """
@@ -128,7 +129,7 @@ class TextPreprocessor(object):
             for seged_sent in src_fp:
                 seged_sent = seged_sent.strip()
                 del_stop_seged_sent = self.del_sent_stop_word(seged_sent, stop_word_dict)
-                dst_fp.write(del_stop_seged_sent + u'\n')
+                dst_fp.write(del_stop_seged_sent + '\n')
 
     def del_file_column_stop_word(self, seged_file, column, del_stop_seged_file, stop_word_file=STOP_WORD_FILE):
         """
@@ -143,10 +144,10 @@ class TextPreprocessor(object):
         with codecs.open(seged_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
                 codecs.open(del_stop_seged_file, 'wb') as dst_fp:
             for line in src_fp:
-                elements = line.split(u'\t')
+                elements = line.split('\t')
                 elements[column] = self.del_sent_stop_word(elements[column].strip(), stop_word_dict)
-                line = u'\t'.join(elements).strip()
-                dst_fp.write(line + u'\n')
+                line = '\t'.join(elements).strip()
+                dst_fp.write(line + '\n')
 
     @staticmethod
     def del_sent_stop_word(seged_sent, stop_word_dict):
@@ -158,13 +159,13 @@ class TextPreprocessor(object):
         """
         tmp = []
         seged_sent = seged_sent.strip()
-        words = seged_sent.split(u' ')
+        words = seged_sent.split(' ')
         for word in words:
             if word in stop_word_dict:
                 continue
             else:
                 tmp.append(word)
-        return u' '.join(tmp)
+        return ' '.join(tmp)
 
     def deseg2file(self, src_file, dst_file):
         with codecs.open(src_file, "rb", "utf-8", errors="ignore") as src_fp, \
@@ -172,19 +173,19 @@ class TextPreprocessor(object):
             for line in src_fp:
                 line = line.strip()
                 if self.re_en_and_num.search(line):
-                    dst_fp.write(line + u"\n")
+                    dst_fp.write(line + "\n")
                     continue
                 else:
-                    text = u"".join(self.re_space.split(line)[:])
-                    dst_fp.write(text + u"\n")
+                    text = "".join(self.re_space.split(line)[:])
+                    dst_fp.write(text + "\n")
 
     # seq = "中国科学院 自动化 研究所"
     # return = "研究所 自动化 中国科学院"
     def rev_seq(self, seq):
         seq = seq.strip()
-        seq_list = seq.split(u" ")
+        seq_list = seq.split(" ")
         rev_seq_list = list(reversed(seq_list))
-        rev_seq = u" ".join(rev_seq_list)
+        rev_seq = " ".join(rev_seq_list)
         return rev_seq
 
     def rev_seq2file(self, src_file, dst_file):
@@ -196,7 +197,7 @@ class TextPreprocessor(object):
                     continue
                 else:
                     rev_seq = self.rev_seq(seq)
-                    dst_fp.write(rev_seq + u"\n")
+                    dst_fp.write(rev_seq + "\n")
 
 
 if __name__ == "__main__":

@@ -49,10 +49,10 @@ class Logger(object):
         if not exists(log_dir):
             os.mkdir(log_dir)
         if config_file:
-            print u"Set log configure file is: " + config_file
+            print("Set log configure file is: " + config_file)
             logging.config.fileConfig(config_file)
         else:
-            print u"Default log configure file is: " + CONF_FILE
+            print("Default log configure file is: " + CONF_FILE)
             logging.config.fileConfig(CONF_FILE)
 
     @staticmethod
@@ -104,8 +104,8 @@ if __name__ == "__main__":
 
     # logger = logging.getLogger()
     logger = logging.getLogger('dual')
-    logger.debug(u'hello')
-    logger.info(u'hello')
-    logger.warning(u'hello')
-    logger.error(u'hello')
-    logger.critical(u'hello')
+    logger.debug('hello')
+    logger.info('hello')
+    logger.warning('hello')
+    logger.error('hello')
+    logger.critical('hello')

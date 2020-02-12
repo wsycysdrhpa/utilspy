@@ -50,12 +50,12 @@ class TimeHelper(object):
     @staticmethod
     def timestamp_to_date(input_string):
         if input_string[0] == "-":
-            time_num = long(input_string[1:])
-            standard_time = datetime.datetime(1970, 01, 01)
-            max_time = datetime.datetime.utcfromtimestamp(long(time_num) / 1000)
+            time_num = int(input_string[1:])
+            standard_time = datetime.datetime(1970, 1, 1)
+            max_time = datetime.datetime.utcfromtimestamp(int(time_num) / 1000)
             result = (standard_time - max_time + standard_time).strftime("%Y-%m-%d %H:%M:%S")
             return result
-        return datetime.datetime.utcfromtimestamp(long(input_string) / 1000).strftime("%Y-%m-%d %H:%M:%S")
+        return datetime.datetime.utcfromtimestamp(int(input_string) / 1000).strftime("%Y-%m-%d %H:%M:%S")
 
     # Decorator for test runing time: @TimeHelper.fn_timer
     @staticmethod
@@ -65,7 +65,7 @@ class TimeHelper(object):
             time_begin = time.time()
             result = func(*args, **kwargs)
             time_end = time.time()
-            print ("Total time of running %s: %s seconds" %(func.func_name, str(time_end - time_begin)))
+            print(("Total time of running %s: %s seconds" %(func.__name__, str(time_end - time_begin))))
             return result
         return function_timer
 

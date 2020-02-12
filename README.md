@@ -20,10 +20,13 @@ git clone https://github.com/wsycysdrhpa/utilspy.git;
 
 
 python3版本支持
-regularization/chinese_text_normalization
-regularization/normalization
-regularization/string_converter
-regularization/word2num
+regularization/*
+dict/*
+environment/*
+log/*
+text/*
+time/*
+
 
 python2版本支持
 其他
