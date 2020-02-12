@@ -30,8 +30,8 @@ from utilspy.dict.dict_util import DictUtil
 STOP_WORD_FILE = os.path.join(CURRENT_DIR_PATH, r'data/stop_word/stop_word.txt')
 
 # Set python default encode
-importlib.reload(sys)
-sys.setdefaultencoding("utf-8")
+# importlib.reload(sys)
+# sys.setdefaultencoding("utf-8")
 
 
 class TextPreprocessor(object):
