@@ -67,7 +67,7 @@ class TextPreprocessor(object):
 
     def seg_file_line(self, src_file, dst_file, mode="seg_line"):
         with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
-                codecs.open(dst_file, 'wb') as dst_fp:
+                codecs.open(dst_file, 'wb', 'utf-8') as dst_fp:
             for line in src_fp:
                 line = line.strip()
                 seged_line = ""
@@ -89,7 +89,7 @@ class TextPreprocessor(object):
         :return: 
         """
         with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
-                codecs.open(dst_file, 'wb') as dst_fp:
+                codecs.open(dst_file, 'wb', 'utf-8') as dst_fp:
             for line in src_fp:
                 line = line.strip()
                 elements = line.split('\t')
@@ -109,7 +109,7 @@ class TextPreprocessor(object):
     @staticmethod
     def del_blank_line(src_file, dst_file):
         with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
-                codecs.open(dst_file, 'wb') as dst_fp:
+                codecs.open(dst_file, 'wb', 'utf-8') as dst_fp:
             for line in src_fp:
                 line = line.strip()
                 if line:
@@ -125,7 +125,7 @@ class TextPreprocessor(object):
         """
         stop_word_dict = DictUtil.file2dict(stop_word_file)
         with codecs.open(seged_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
-                codecs.open(del_stop_seged_file, 'wb') as dst_fp:
+                codecs.open(del_stop_seged_file, 'wb', 'utf-8') as dst_fp:
             for seged_sent in src_fp:
                 seged_sent = seged_sent.strip()
                 del_stop_seged_sent = self.del_sent_stop_word(seged_sent, stop_word_dict)
@@ -142,7 +142,7 @@ class TextPreprocessor(object):
         """
         stop_word_dict = DictUtil.file2dict(stop_word_file)
         with codecs.open(seged_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
-                codecs.open(del_stop_seged_file, 'wb') as dst_fp:
+                codecs.open(del_stop_seged_file, 'wb', 'utf-8') as dst_fp:
             for line in src_fp:
                 elements = line.split('\t')
                 elements[column] = self.del_sent_stop_word(elements[column].strip(), stop_word_dict)
@@ -169,7 +169,7 @@ class TextPreprocessor(object):
 
     def deseg2file(self, src_file, dst_file):
         with codecs.open(src_file, "rb", "utf-8", errors="ignore") as src_fp, \
-                codecs.open(dst_file, "wb") as dst_fp:
+                codecs.open(dst_file, "wb", 'utf-8') as dst_fp:
             for line in src_fp:
                 line = line.strip()
                 if self.re_en_and_num.search(line):
@@ -190,7 +190,7 @@ class TextPreprocessor(object):
 
     def rev_seq2file(self, src_file, dst_file):
         with codecs.open(src_file, "rb", "utf-8", errors="ignore") as src_fp, \
-                codecs.open(dst_file, "wb") as dst_fp:
+                codecs.open(dst_file, "wb", 'utf-8') as dst_fp:
             for seq in src_fp:
                 seq = seq.strip()
                 if not seq:

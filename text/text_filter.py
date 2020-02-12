@@ -17,7 +17,7 @@ class TextFilter(object):
 
     def run(self, src_file, dst_file):
         with codecs.open(src_file, 'rb', 'utf-8', errors='ignore') as src_fp, \
-                codecs.open(dst_file, 'wb') as dst_fp:
+                codecs.open(dst_file, 'wb', 'utf-8') as dst_fp:
             for line in src_fp:
                 line = line.strip()
                 # line = self.filt_line_en(line)
