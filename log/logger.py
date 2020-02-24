@@ -104,8 +104,8 @@ if __name__ == "__main__":
 
     # logger = logging.getLogger()
     logger = logging.getLogger('dual')
-    logger.debug('hello')
+    logger.debug('你好')
     logger.info('hello')
-    logger.warning('hello')
+    logger.warning('你好')
     logger.error('hello')
-    logger.critical('hello')
+    logger.critical('你好')
