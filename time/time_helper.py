@@ -65,7 +65,7 @@ class TimeHelper(object):
             time_begin = time.time()
             result = func(*args, **kwargs)
             time_end = time.time()
-            print(("Total time of running %s: %s seconds" %(func.__name__, str(time_end - time_begin))))
+            print("Total time of running %s: %s seconds" %(func.__name__, str(time_end - time_begin)))
             return result
         return function_timer
 
