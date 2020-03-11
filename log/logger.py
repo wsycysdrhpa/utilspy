@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# @update: '2018/2/21'
+# @update: '2020/02/21'
 # @description:
 
 
@@ -103,9 +103,18 @@ if __name__ == "__main__":
     # Logger.critical(u'hello', logger_name='dual')
 
     # logger = logging.getLogger()
-    logger = logging.getLogger('dual')
-    logger.debug('你好')
-    logger.info('hello')
-    logger.warning('你好')
-    logger.error('hello')
-    logger.critical('你好')
+    # logger = logging.getLogger('dual')
+    # logger.debug('你好')
+    # logger.info('hello')
+    # logger.warning('你好')
+    # logger.error('hello')
+    # logger.critical('你好')
+
+    logger = logging.getLogger('rotatingFileDual')
+    for i in range(100):
+        print(i)
+        logger.debug('你好')
+        logger.info('hello')
+        logger.warning('你好')
+        logger.error('hello')
+        logger.critical('你好')
