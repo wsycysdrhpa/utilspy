@@ -290,6 +290,6 @@ if __name__ == "__main__":
 
     try:
         text_preprocessor.seg_file_column(in_file, out_file, column, mode)
-    except:
+    except FileNotFoundError:
         print(info)
         sys.exit(1)
