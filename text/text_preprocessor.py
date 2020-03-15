@@ -257,8 +257,8 @@ if __name__ == "__main__":
     info = "python3 %s -i <in_file> -o <out_file> [--in_file=] [--out_file=] [--seg_dict_file] [--break_up_dict_file] " \
            "[--preprocessor_flag:cn_en|cn|en] [--column:1] [--mode:seg_line|seg_line_to_single|seg_line_and_break_up]" % (sys.argv[0])
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["in_file=", "out_file=", "seg_dict_file",
-                                                           "break_up_dict_file", "preprocessor_flag", "column", "mode"])
+        opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["in_file=", "out_file=", "seg_dict_file=",
+                                                           "break_up_dict_file=", "preprocessor_flag=", "column=", "mode="])
     except getopt.GetoptError:
         print(info)
         sys.exit(1)
