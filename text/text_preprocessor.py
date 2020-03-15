@@ -248,4 +248,44 @@ if __name__ == "__main__":
 
     in_file = r""
     out_file = r""
-    text_preprocessor.seg_file_column(in_file, out_file, 1, mode="seg_line")
+    column = 1
+    mode = "seg_line"
+    # text_preprocessor.seg_file_column(in_file, out_file, column, mode)
+
+    import getopt
+
+    info = "python3 %s -i <in_file> -o <out_file> [--in_file=] [--out_file=] [--seg_dict_file] [--break_up_dict_file] " \
+           "[--preprocessor_flag:cn_en|cn|en] [--column:1] [--mode:seg_line|seg_line_to_single|seg_line_and_break_up]" % (sys.argv[0])
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["in_file=", "out_file=", "seg_dict_file",
+                                                           "break_up_dict_file", "preprocessor_flag", "column", "mode"])
+    except getopt.GetoptError:
+        print(info)
+        sys.exit(1)
+    for opt, arg in opts:
+        if opt == '-h':
+            print(info)
+            sys.exit(0)
+        elif opt in ("-i", "--in_file"):
+            in_file = arg
+        elif opt in ("-o", "--out_file"):
+            out_file = arg
+        elif opt in ("--seg_dict_file", ):
+            seg_dict_file = arg
+        elif opt in ("--break_up_dict_file", ):
+            break_up_dict_file = arg
+        elif opt in ("--preprocessor_flag", ):
+            preprocessor_flag = arg
+            if preprocessor_flag == "cn_en":
+                text_preprocessor = TextPreprocessor('cn_en', args=(seg_dict_file, 'set', True, False,
+                                                                    break_up_dict_file))
+            elif  preprocessor_flag == "cn":
+                text_preprocessor = TextPreprocessor('cn', args=(seg_dict_file, 'set', False))
+            elif preprocessor_flag == "en":
+                text_preprocessor = TextPreprocessor('en', args=(True,))
+        elif opt in ("--column", ):
+            column = int(arg)
+        elif opt in ("--mode", ):
+            mode = arg
+
+    text_preprocessor.seg_file_column(in_file, out_file, column, mode)
