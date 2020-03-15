@@ -288,4 +288,8 @@ if __name__ == "__main__":
         elif opt in ("--mode", ):
             mode = arg
 
-    text_preprocessor.seg_file_column(in_file, out_file, column, mode)
+    try:
+        text_preprocessor.seg_file_column(in_file, out_file, column, mode)
+    except:
+        print(info)
+        sys.exit(1)
