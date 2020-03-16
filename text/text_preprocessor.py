@@ -52,7 +52,7 @@ class TextPreprocessor(object):
 
         self.re_space = re.compile("\s")
         # [A-Za-z0-9_]
-        self.re_en_and_num = re.compile("\w+")
+        self.re_en_and_num = re.compile("\w+", re.A)
 
     def seg_line(self, line):
         return self.preprocessor.seg_sent(line)
@@ -167,7 +167,7 @@ class TextPreprocessor(object):
                 tmp.append(word)
         return ' '.join(tmp)
 
-    def deseg2file(self, src_file, dst_file):
+    def file_deseg_to_file(self, src_file, dst_file):
         with codecs.open(src_file, "rb", "utf-8", errors="ignore") as src_fp, \
                 codecs.open(dst_file, "wb", 'utf-8') as dst_fp:
             for line in src_fp:
@@ -178,6 +178,22 @@ class TextPreprocessor(object):
                 else:
                     text = "".join(self.re_space.split(line)[:])
                     dst_fp.write(text + "\n")
+
+    def file_deseg_colunm_to_file(self, src_file, dst_file, column):
+        with codecs.open(src_file, "rb", "utf-8", errors="ignore") as src_fp, \
+                codecs.open(dst_file, "wb", 'utf-8') as dst_fp:
+            for line in src_fp:
+                line = line.strip()
+                elements = line.split('\t')
+                if len(elements) >= column + 1:
+                    if self.re_en_and_num.search(elements[column]):
+                        print(elements[column])
+                        dst_fp.write(line + "\n")
+                        continue
+                    else:
+                        elements[column] = "".join(self.re_space.split(elements[column])[:])
+                        line = '\t'.join(elements)
+                        dst_fp.write(line + '\n')
 
     # seq = "中国科学院 自动化 研究所"
     # return = "研究所 自动化 中国科学院"
@@ -236,7 +252,12 @@ if __name__ == "__main__":
 
     # in_file = r""
     # out_file = r""
-    # text_preprocessor.deseg2file(in_file, out_file)
+    # text_preprocessor.file_deseg_to_file(in_file, out_file)
+
+    in_file = r"D:\Code\Tools\Python\utilspy\test\test.txt"
+    out_file = r"D:\Code\Tools\Python\utilspy\test\out.txt"
+    column = 1
+    text_preprocessor.file_deseg_colunm_to_file(in_file, out_file, column)
 
     # in_file = r""
     # out_file = r""
