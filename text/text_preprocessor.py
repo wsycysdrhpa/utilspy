@@ -254,10 +254,10 @@ if __name__ == "__main__":
     # out_file = r""
     # text_preprocessor.file_deseg_to_file(in_file, out_file)
 
-    in_file = r"D:\Code\Tools\Python\utilspy\test\test.txt"
-    out_file = r"D:\Code\Tools\Python\utilspy\test\out.txt"
-    column = 1
-    text_preprocessor.file_deseg_colunm_to_file(in_file, out_file, column)
+    # in_file = r""
+    # out_file = r""
+    # column = 1
+    # text_preprocessor.file_deseg_colunm_to_file(in_file, out_file, column)
 
     # in_file = r""
     # out_file = r""
