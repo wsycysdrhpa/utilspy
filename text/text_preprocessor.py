@@ -167,29 +167,38 @@ class TextPreprocessor(object):
                 tmp.append(word)
         return ' '.join(tmp)
 
-    def file_deseg_to_file(self, src_file, dst_file):
+    def file_deseg_to_file(self, src_file, dst_file, en_line_trans=True):
         with codecs.open(src_file, "rb", "utf-8", errors="ignore") as src_fp, \
                 codecs.open(dst_file, "wb", 'utf-8') as dst_fp:
             for line in src_fp:
                 line = line.strip()
-                if self.re_en_and_num.search(line):
-                    dst_fp.write(line + "\n")
-                    continue
+                if not en_line_trans:
+                    if self.re_en_and_num.search(line):
+                        dst_fp.write(line + "\n")
+                        continue
+                    else:
+                        text = "".join(self.re_space.split(line)[:])
+                        dst_fp.write(text + "\n")
                 else:
                     text = "".join(self.re_space.split(line)[:])
                     dst_fp.write(text + "\n")
 
-    def file_deseg_colunm_to_file(self, src_file, dst_file, column):
+    def file_deseg_colunm_to_file(self, src_file, dst_file, column, en_line_trans=True):
         with codecs.open(src_file, "rb", "utf-8", errors="ignore") as src_fp, \
                 codecs.open(dst_file, "wb", 'utf-8') as dst_fp:
             for line in src_fp:
                 line = line.strip()
                 elements = line.split('\t')
                 if len(elements) >= column + 1:
-                    if self.re_en_and_num.search(elements[column]):
-                        # print(elements[column])
-                        dst_fp.write(line + "\n")
-                        continue
+                    if not en_line_trans:
+                        if self.re_en_and_num.search(elements[column]):
+                            # print(elements[column])
+                            dst_fp.write(line + "\n")
+                            continue
+                        else:
+                            elements[column] = "".join(self.re_space.split(elements[column])[:])
+                            line = '\t'.join(elements)
+                            dst_fp.write(line + '\n')
                     else:
                         elements[column] = "".join(self.re_space.split(elements[column])[:])
                         line = '\t'.join(elements)
