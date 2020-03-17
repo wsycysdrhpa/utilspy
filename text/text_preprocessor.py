@@ -187,7 +187,7 @@ class TextPreprocessor(object):
                 elements = line.split('\t')
                 if len(elements) >= column + 1:
                     if self.re_en_and_num.search(elements[column]):
-                        print(elements[column])
+                        # print(elements[column])
                         dst_fp.write(line + "\n")
                         continue
                     else:
