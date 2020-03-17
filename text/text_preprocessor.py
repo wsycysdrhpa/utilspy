@@ -261,12 +261,14 @@ if __name__ == "__main__":
 
     # in_file = r""
     # out_file = r""
-    # text_preprocessor.file_deseg_to_file(in_file, out_file)
+    # en_line_trans = True
+    # text_preprocessor.file_deseg_to_file(in_file, out_file, en_line_trans)
 
     # in_file = r""
     # out_file = r""
     # column = 1
-    # text_preprocessor.file_deseg_colunm_to_file(in_file, out_file, column)
+    # en_line_trans = True
+    # text_preprocessor.file_deseg_colunm_to_file(in_file, out_file, column, en_line_trans)
 
     # in_file = r""
     # out_file = r""
