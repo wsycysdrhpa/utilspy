@@ -280,7 +280,7 @@ if __name__ == "__main__":
 
     in_file = r""
     out_file = r""
-    column = 1
+    column = 0
     mode = "seg_line"
     # text_preprocessor.seg_file_column(in_file, out_file, column, mode)
 
