@@ -40,7 +40,7 @@ class Environment(object):
                                   如果在工作目录的一级子文件夹下，深度为2， 以此类推。
         """
         self._working_dir_path, self._script_name = self._parse_start_file_name(start_file_path, start_file_depth)
-        self._set_working_path(self._working_dir_path)
+        # self._set_working_path(self._working_dir_path)
         self._load_configure()
         self._init_logger()
 
