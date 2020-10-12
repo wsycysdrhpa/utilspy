@@ -59,13 +59,13 @@ if __name__ == "__main__":
     pass
     pat = re.compile(r'\d+')
     text = u'one1two2three3four4'
-    print RegexHelper.search_single(pat, text)
+    print(RegexHelper.search_single(pat, text))
 
     text = u'123abc'
-    print RegexHelper.match_content(pat, text)
+    print(RegexHelper.match_content(pat, text))
 
     text = u'one1two2three3four4'
-    print RegexHelper.find_all(pat, text)
+    print(RegexHelper.find_all(pat, text))
 
     text = u'one1two2three3four4'
     re_digit = re.compile(u'[0-9]')

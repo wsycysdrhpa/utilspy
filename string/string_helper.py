@@ -1,10 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # @version: 1.0
 # @author: luojie
 # @date: '14-4-11'
 
+
+import ahocorasick
 
 from utilspy.string.string_handler import StringHandler
 
@@ -39,14 +41,33 @@ class StringHelper(object):
             class_name += (part[0].upper()+part[1:])
         return class_name
 
+    @staticmethod
+    def build_actree(word_list):
+        actree = ahocorasick.Automaton()
+        for index, word in enumerate(word_list):
+            actree.add_word(word, (index, word))
+        actree.make_automaton()
+        return actree
+
 
 if __name__ == "__main__":
     pass
     s = ''
-    print StringHelper.is_empty(s)
+    print(StringHelper.is_empty(s))
+    print()
 
     s = 'hello!'
-    print StringHelper.slice(s, '1:5')
-    print s[1:5]
+    print(StringHelper.slice(s, '1:5'))
+    print(s[1:5])
+    print()
 
-    print StringHelper.to_class_name("redis_file_saver")
+    print(StringHelper.to_class_name("redis_file_saver"))
+    print()
+
+    # AC test
+    word_list = 'he her hers she'.split()
+    actree = StringHelper.build_actree(word_list)
+    haystack = "she is a hestudent"
+    for end_index, (insert_order, original_value) in actree.iter(haystack):
+        start_index = end_index - len(original_value) + 1
+        print((start_index, end_index, (insert_order, original_value)))
