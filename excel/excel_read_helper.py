@@ -21,7 +21,7 @@ class ExcelReadHelper(object):
 if __name__ == "__main__":
     pass
     excel_read_helper = ExcelReadHelper()
-    ws = excel_read_helper.read_from_excel(r'./example.xls', sheet_col=0)
+    ws = excel_read_helper.read_from_excel(r'./data/example.xls', sheet_col=0)
 
     # 获取每行数据，处理数据时需要注意第一行是否是表头
     for r in range(ws.nrows):
