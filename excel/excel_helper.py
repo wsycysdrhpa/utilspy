@@ -19,32 +19,34 @@ class ExcelHelper(object):
         self.excel_read_helper = ExcelReadHelper()
         self.excel_write_helper = ExcelWriteHelper()
 
-    # excel头不做区分
-    def excel2txt(self, excel_path, txt_path, sheet_col):
+    def excel2txt(self, excel_path, txt_path, sheet_col, is_contain_header=True):
         """
         
         :param excel_path: excel路径 
         :param txt_path: txt路径
         :param sheet_col: 表序号，从0开始
+        :param is_contain_header: 是否需要包含头，是的话包含第一行，否则不包含
         :return: 
         """
         ws = self.excel_read_helper.read_from_excel(excel_path, sheet_col)
         with codecs.open(txt_path, "wb", 'utf-8') as txt_fp:
-            for r in range(ws.nrows):
-                rows = ws.row_values(r)
-                for i in range(len(rows)):
-                    rows[i] = str(rows[i])
-                    rows[i] = self.re_noise.sub("  ", rows[i])
+            for i in range(ws.nrows):
+                rows = ws.row_values(i)
+                for j in range(len(rows)):
+                    rows[j] = str(rows[j])
+                    rows[j] = self.re_noise.sub("  ", rows[j])
                 # print(rows)
+                if not is_contain_header and i==0:
+                    continue
                 txt_fp.write("\t".join(rows) + "\n")
 
-    # excel头不做区分
-    def txt2excel(self, txt_path, excel_path, sheet_name):
+    def txt2excel(self, txt_path, excel_path, sheet_name, header=()):
         """
         
         :param txt_path: txt路径
         :param excel_path: excel路径 
         :param sheet_name: excel表名
+        :param header: just like ["id", "name", "age"] or ("id", "name", "age")
         :return: 
         """
         rows = []
@@ -58,11 +60,17 @@ class ExcelHelper(object):
                 # print(line_lst)
                 rows.append(line_lst)
             # print(rows)
-        self.excel_write_helper.write_to_excel(excel_path, sheet_name, rows)
+        if not header:
+            self.excel_write_helper.write_to_excel(excel_path, sheet_name, rows)
+        else:
+            self.excel_write_helper.write_to_excel_with_head(excel_path, sheet_name, header, rows)
 
 
 if __name__ == "__main__":
     pass
     excel_helper = ExcelHelper()
-    excel_helper.excel2txt(r"./data/example.xls", r"./data/example.txt", 0)
-    excel_helper.txt2excel(r"./data/example.txt", r"./data/example2.xls", "test")
+    excel_helper.excel2txt(r"./data/example_with_header.xls", r"./data/example_with_header.txt", 0, is_contain_header=True)
+    excel_helper.excel2txt(r"./data/example_with_header.xls", r"./data/example.txt", 0, is_contain_header=False)
+
+    excel_helper.txt2excel(r"./data/example.txt", r"./data/example2.xls", "test", [])
+    excel_helper.txt2excel(r"./data/example.txt", r"./data/example2_with_header.xls", "test", ("id", "name", "age"))
