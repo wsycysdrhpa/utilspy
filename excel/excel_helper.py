@@ -6,6 +6,7 @@
 
 
 import codecs
+import re
 
 
 from utilspy.excel.excel_read_helper import ExcelReadHelper
@@ -14,6 +15,7 @@ from utilspy.excel.excel_write_helper import ExcelWriteHelper
 
 class ExcelHelper(object):
     def __init__(self):
+        self.re_noise = re.compile("[\t\r\n]")
         self.excel_read_helper = ExcelReadHelper()
         self.excel_write_helper = ExcelWriteHelper()
 
@@ -30,7 +32,9 @@ class ExcelHelper(object):
         with codecs.open(txt_path, "wb", 'utf-8') as txt_fp:
             for r in range(ws.nrows):
                 rows = ws.row_values(r)
-                rows = [str(r) for r in rows]
+                for i in range(len(rows)):
+                    rows[i] = str(rows[i])
+                    rows[i] = self.re_noise.sub("  ", rows[i])
                 # print(rows)
                 txt_fp.write("\t".join(rows) + "\n")
 
