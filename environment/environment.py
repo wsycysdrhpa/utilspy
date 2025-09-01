@@ -33,17 +33,19 @@ class Environment(object):
             Environment.instance = Environment(load_user_configure=load_user_configure, conf_path_list=conf_path_list)
         return Environment.instance
 
-    def init(self, start_file_path, start_file_depth=1):
+    def init(self, start_file_path, start_file_depth=1, port=None, pid=None):
         """
         初始化应用环境
         :param start_file_path:   调用本方法的代码文件的完整路径
         :param start_file_depth:  调用本方法的代码文件距离工作目录的深度。如果在工作目录下，深度为1；
                                   如果在工作目录的一级子文件夹下，深度为2， 以此类推。
+        :param port: 服务端口号，用于生成日志文件名
+        :param pid: 进程号，用于生成日志文件名
         """
         self._working_dir_path, self._script_name = self._parse_start_file_name(start_file_path, start_file_depth)
         self._set_working_path(self._working_dir_path)
         self._load_configure()
-        self._init_logger()
+        self._init_logger(port=port, pid=pid)
 
     def get_script_name(self):
         return self._script_name
@@ -95,9 +97,9 @@ class Environment(object):
         project_dir = os.sep.join(file_name_parts)
         return project_dir, script_name
 
-    def _init_logger(self):
+    def _init_logger(self, port=None, pid=None):
         if not self.load_user_configure:
-            Logger.load_configure()
+            Logger.load_configure(port=port, pid=pid)
             return
         try:
             logger_file_path = ""
@@ -105,11 +107,11 @@ class Environment(object):
                 logger_file_name = self._configure_parser.get('logger', 'name')
                 logger_file_path = os.path.join(self._working_dir_path, "conf", logger_file_name)
             if os.path.exists(logger_file_path):
-                Logger.load_configure(logger_file_path)
+                Logger.load_configure(logger_file_path, port=port, pid=pid)
             else:
-                Logger.load_configure()
+                Logger.load_configure(port=port, pid=pid)
         except NoSectionError as e:
-            Logger.load_configure()
+            Logger.load_configure(port=port, pid=pid)
             LOGGER.warning(e.message)
 
     # 如果只有一个配置文件. 若需要加载总配置文件，总配置文件路径及命名如下:
