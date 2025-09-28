@@ -1,9 +1,10 @@
+.idea/
+.DS_Store
+.vscode
+
 # chinese_text_normalization
 # https://github.com/speech-io/chinese_text_normalization
 regularization/chinese_text_normalization/
-
-# Pycharm
-.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
