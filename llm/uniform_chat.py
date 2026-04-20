@@ -143,6 +143,36 @@ class UniformChat:
             print("Error listing %s models, Exception Info: %s: %s, %s, %s" % (self.api_type, e.__traceback__.tb_frame.f_globals['__file__'], e.__traceback__.tb_lineno, type(e), e))
             return []
 
+    def _should_avoid_temperature_and_top_p_together(self) -> bool:
+        """
+        一些提供商/路由（尤其是 Anthropic/Claude）不允许同时指定 temperature 和 top_p。
+        这里做一个尽力而为的检测，避免 400 invalid_request_error。
+        """
+        m = (self.model or "").lower()
+        # OpenAI-compatible 路由里常见的 Anthropic 命名：anthropic/claude-...
+        if m.startswith("anthropic/"):
+            return True
+        # 兼容可能直接传 claude-xxx 的情况
+        if m.startswith("claude"):
+            return True
+        return self.api_type == "claude"
+
+    def _sampling_kwargs(self) -> dict:
+        """
+        统一生成采样参数，必要时避免 temperature 与 top_p 同时出现。
+        默认策略：若两者都存在且不兼容，则保留 temperature，移除 top_p。
+        """
+        kwargs: dict = {}
+        if self.temperature is not None:
+            kwargs["temperature"] = self.temperature
+        if self.top_p is not None:
+            kwargs["top_p"] = self.top_p
+
+        if self._should_avoid_temperature_and_top_p_together():
+            if "temperature" in kwargs and "top_p" in kwargs:
+                kwargs.pop("top_p", None)
+        return kwargs
+
     def get_response(self,
                      user_message):
         """
@@ -161,8 +191,7 @@ class UniformChat:
                     max_tokens=self.max_tokens,
                     system=self.system_message,
                     messages=[{"role": "user", "content": user_message}],
-                    temperature=self.temperature,
-                    top_p=self.top_p,
+                    **self._sampling_kwargs(),
                 )
                 # Anthropic returns a list of content blocks; keep behavior consistent by returning text.
                 return "".join(
@@ -175,8 +204,7 @@ class UniformChat:
                         {"role": "system", "content": self.system_message},
                         {"role": "user", "content": user_message},
                     ],
-                    temperature=self.temperature,
-                    top_p=self.top_p,
+                    **self._sampling_kwargs(),
                     max_tokens=self.max_tokens,
                 )
                 return completion.choices[0].message.content
@@ -206,8 +234,7 @@ class UniformChat:
                     max_tokens=self.max_tokens,
                     system=self.system_message,
                     messages=[{"role": "user", "content": user_message}],
-                    temperature=self.temperature,
-                    top_p=self.top_p,
+                    **self._sampling_kwargs(),
                 ) as stream:
                     for text in stream.text_stream:
                         if text:
@@ -219,8 +246,7 @@ class UniformChat:
                         {"role": "system", "content": self.system_message},
                         {"role": "user", "content": user_message},
                     ],
-                    temperature=self.temperature,
-                    top_p=self.top_p,
+                    **self._sampling_kwargs(),
                     max_tokens=self.max_tokens,
                     stream=True
                 )
@@ -335,8 +361,7 @@ if __name__ == "__main__":
 
     chat = UniformChat(
         api_type=api_type,
-        # api_type='custom'
-        # base_url="",
+        # base_url="",  # for custom api_type
         system_message="你是一个专业的金融分析师，擅长分析金融数据和市场趋势。"
     )
 
