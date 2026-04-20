@@ -1,2 +1,5 @@
 jieba
 ahocorasick
+openai
+anthropic
+python-dotenv
