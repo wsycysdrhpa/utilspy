@@ -362,6 +362,7 @@ if __name__ == "__main__":
     chat = UniformChat(
         api_type=api_type,
         # base_url="",  # for custom api_type
+        # model="anthropic/claude-opus-4-6",
         system_message="你是一个专业的金融分析师，擅长分析金融数据和市场趋势。"
     )
 
