@@ -1,4 +1,5 @@
 import os
+import re
 
 from openai import OpenAI
 
@@ -105,7 +106,7 @@ class UniformChat:
         self.top_p = top_p
         self.max_tokens = max_tokens
 
-        print(f"Initialized {self.api_type} client with model {self.model}")
+        # print(f"Initialized {self.api_type} client with model {self.model}")
 
     def list_models(self):
         """
@@ -157,11 +158,24 @@ class UniformChat:
             return True
         return self.api_type == "claude"
 
+    def _should_skip_sampling_params(self) -> bool:
+        """
+        部分新版 Anthropic Claude 模型已弃用 temperature / top_p 参数。
+        例如 anthropic/claude-opus-4-8 会返回 400 invalid_parameter。
+        """
+        m = (self.model or "").lower()
+        name = m.rsplit("/", 1)[-1]
+        # claude-opus-4-7、claude-opus-4-8 及更高小版本号
+        return bool(re.search(r"claude-(?:opus|sonnet|haiku)-4-(?:[7-9]|[1-9]\d+)", name))
+
     def _sampling_kwargs(self) -> dict:
         """
         统一生成采样参数，必要时避免 temperature 与 top_p 同时出现。
-        默认策略：若两者都存在且不兼容，则保留 temperature，移除 top_p。
+        新版 Claude 模型会跳过全部采样参数，使用模型默认值。
         """
+        if self._should_skip_sampling_params():
+            return {}
+
         kwargs: dict = {}
         if self.temperature is not None:
             kwargs["temperature"] = self.temperature
