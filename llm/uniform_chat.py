@@ -160,13 +160,20 @@ class UniformChat:
 
     def _should_skip_sampling_params(self) -> bool:
         """
-        部分新版 Anthropic Claude 模型已弃用 temperature / top_p 参数。
-        例如 anthropic/claude-opus-4-8 会返回 400 invalid_parameter。
+        部分模型不支持自定义 temperature / top_p，只能用默认值。
+        例如：
+        - anthropic/claude-opus-4-8 会返回 400 invalid_parameter
+        - openai/gpt-5.6-luna 只允许 temperature=1（默认值）
         """
         m = (self.model or "").lower()
         name = m.rsplit("/", 1)[-1]
         # claude-opus-4-7、claude-opus-4-8 及更高小版本号
-        return bool(re.search(r"claude-(?:opus|sonnet|haiku)-4-(?:[7-9]|[1-9]\d+)", name))
+        if re.search(r"claude-(?:opus|sonnet|haiku)-4-(?:[7-9]|[1-9]\d+)", name):
+            return True
+        # GPT-5 系列（含 gpt-5.6-luna/terra/sol）及 o 系列推理模型
+        if re.search(r"^gpt-5", name) or re.search(r"^o[1-9]", name):
+            return True
+        return False
 
     def _sampling_kwargs(self) -> dict:
         """
