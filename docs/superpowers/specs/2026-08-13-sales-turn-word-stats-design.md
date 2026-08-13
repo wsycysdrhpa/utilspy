@@ -24,9 +24,9 @@
 ## 轮次与词数规则
 
 1. **分词**：`str.split()`（按空白切分，适用于印尼语）
-2. **一轮定义**：同一角色连续多句合并为 1 轮，该轮词数 = 各句词数之和
+2. **人工一轮定义**：同一角色连续多句合并为 1 轮，该轮词数 = 各句词数之和
 3. **人工开局门槛**（仅人工）：从对话开头起跳过销售轮，直到某销售轮词数 **> 5**，该轮及之后的销售轮才计入统计；之后即使销售轮较短也计入
-4. **机器人**：忽略全部 `overtime` 条目；过滤后若相邻仍是 bot，同样合并为 1 轮；从第一条有效 bot 轮开始统计（无 >5 门槛）
+4. **机器人**：忽略全部 `overtime` 条目；**不做相邻 bot 合并**——每条有效 bot message（如 `create.bot` / `chat.bot`）各自算 1 轮；从第一条有效 bot 轮开始统计（无 >5 门槛）
 5. 客户轮不参与分子/分母
 
 ## 指标（两侧各算一套）
@@ -46,7 +46,7 @@
 - 单脚本本地统计，不调用 LLM
 - 复用项目内常见的 Excel 读取与 JSON 解析模式（与 `acquire_sop_stage.py` 等一致）
 - 人工解析 `messages[]` 的 `role` / `content`
-- 机器人解析 `items[]`：`create.bot.message`、`chat.user/bot.message`；跳过 `overtime`；忽略 `destroy` 等无 message 结构
+- 机器人解析 `items[]`：`create.bot.message`、`chat.bot.message` 各计一轮；跳过 `overtime`；忽略 `destroy` 等无 message 结构；相邻 bot 不合并
 - 解析失败的行跳过并计数，不中断整批
 
 ## 非目标
