@@ -8,17 +8,21 @@ import sys
 from os.path import dirname
 
 from tqdm import tqdm
+import librosa
 
 CURRENT_FILE_PATH = os.path.abspath(__file__)
 CURRENT_PROJECT_PATH = dirname(dirname(CURRENT_FILE_PATH))
 sys.path.append(CURRENT_PROJECT_PATH)
 
-from utils.audio_processing import get_file_duration
 
 AUDIO_EXTENSIONS = {
     '.wav', '.mp3', '.flac', '.ogg', '.m4a', '.aac',
     '.wma', '.opus', '.amr', '.webm', '.mp4',
 }
+
+
+def get_file_duration(file):
+    return librosa.get_duration(filename=file)
 
 
 def format_duration(seconds):
