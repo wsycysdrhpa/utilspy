@@ -13,6 +13,7 @@ re_useless_char = re.compile(re_useless_char_pattern, flags=re.U)
 re_muti_space = re.compile("\s+", flags=re.U)
 
 
+root_dir = '/workspace/haipeng/haipeng/work/data/indonesia/asr/speechocean/speechocean-annot/marketing'
 batchs = [
           'batch_1_marketing_4.96h',
           'batch_2_marketing_10.3h',
@@ -21,14 +22,13 @@ batchs = [
         ]
 
 for batch in batchs:
-    root_dir = '/workspace/haipeng/haipeng/work/data/indonesia/asr/speechocean/speechocean-annot/marketing'
     src_dir = join(root_dir, batch, 'valid')
 
     # 2023 batch 1-15
     # src_audio_dir = '/home/yangsen/data/asr/speechocean/speechocean-annot/indonesia/{}/wav'.format(batch)
     # 2024 batch 1-3
     src_audio_dir = '/workspace/haipeng/haipeng/work/data/indonesia/asr/to_label/marketing_20240603-20240603/audio_left_seged'
-    # 2024 batch_4
+    # 2024 batch 4
     # src_audio_dir = '/workspace/haipeng/haipeng/work/data/indonesia/asr/to_label/voicemail/0629_5-10s_10k/audio_left'
 
     src_audio_postfix = '.wav'
