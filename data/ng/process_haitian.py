@@ -41,7 +41,7 @@ run_cmd = args.run_cmd
 root_dir = '/work/data/asr/ng/nigerian_pidgin/speechocean/speechocean-annot/collection/2026'
 batchs = [
           'vad_output_ng_collection_20260908_ch1_30h_delivery_20260924_19h',
-        #   'vad_output_ng_collection_20260929_ch1_55h_delivery_20261015_38h',
+          # 'vad_output_ng_collection_20260929_ch1_55h_delivery_20261015_38h',
         ]
 
 for batch in batchs:
@@ -49,7 +49,7 @@ for batch in batchs:
 
     # 2026 collection
     src_audio_dir = '/work/haipeng/work/business/ng/collection/audio_to_label/20260908/vad_output_ng_collection_20260908_ch1_30h'
-    # src_audio_dir = '/work/haipeng/work/business/ng/collection/audio_to_label/20260908/vad_output_ng_collection_20260929_ch1_55h'
+    # src_audio_dir = '/work/haipeng/work/business/ng/collection/audio_to_label/20260929/vad_output_ng_collection_20260929_ch1_55h'
 
     src_audio_postfix = '.wav'
 
