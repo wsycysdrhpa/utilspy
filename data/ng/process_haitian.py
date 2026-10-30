@@ -15,6 +15,23 @@ re_useless_char = re.compile(re_useless_char_pattern, flags=re.U)
 re_muti_space = re.compile(r'\s+', flags=re.U)
 
 
+def is_header_line(line):
+    """首行若不是 [start-end]\\trole\\ttext 格式，视为表头。"""
+    parts = line.strip().split('\t')
+    if len(parts) < 3:
+        return True
+    time_span = parts[0].strip().strip('[]')
+    if '-' not in time_span:
+        return True
+    try:
+        start, end = time_span.split('-', 1)
+        float(start)
+        float(end)
+        return False
+    except ValueError:
+        return True
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--run-cmd', action='store_true', help='执行 sox 切分音频')
 args = parser.parse_args()
@@ -45,6 +62,9 @@ for batch in batchs:
         os.makedirs(out_seg_dir)
 
     src_files = sorted(glob(join(src_dir, '*.txt')))
+    n_files = len(src_files)
+    n_files_empty = 0
+    n_files_with_data = 0
     n_total = 0
     n_filtered = 0
     n_written = 0
@@ -61,8 +81,21 @@ for batch in batchs:
                 lines = src_fp.readlines()
                 file_prefix = os.path.basename(src_file)[:-4]
                 src_audio_path = join(src_audio_dir, file_prefix + src_audio_postfix)
-                # skip header
-                for line in lines[1:]:
+
+                data_lines = []
+                for i, raw in enumerate(lines):
+                    if not raw.strip():
+                        continue
+                    if i == 0 and is_header_line(raw):
+                        continue
+                    data_lines.append(raw)
+
+                if not data_lines:
+                    n_files_empty += 1
+                    continue
+                n_files_with_data += 1
+
+                for line in data_lines:
                     n_total += 1
                     try:
                         line = line.strip()
@@ -97,10 +130,13 @@ for batch in batchs:
                         cmd = "sox {} {} trim {} {}".format(src_audio_path, out_wav_file, start, round(float(end)-float(start), 2))
                         if run_cmd:
                             status, output = subprocess.getstatusoutput(cmd)
-                            if status != 0:
+                            if status != 0 or not os.path.exists(out_wav_file):
                                 n_sox_fail += 1
                                 if sox_fail_shown < 10:
-                                    tqdm.write(f'sox failed ({status}): {cmd}\n{output}')
+                                    tqdm.write(
+                                        f'sox failed ({status}): {cmd}\n'
+                                        f'exists={os.path.exists(out_wav_file)} output={output}'
+                                    )
                                     sox_fail_shown += 1
                             else:
                                 n_sox_ok += 1
@@ -122,7 +158,10 @@ for batch in batchs:
 
                 # break
 
-    summary = f'[{batch}] 标注行数={n_total} 过滤={n_filtered} 写出={n_written} 异常={n_error}'
+    summary = (
+        f'[{batch}] 文件={n_files} 有数据={n_files_with_data} 空文件={n_files_empty} '
+        f'标注行数={n_total} 过滤={n_filtered} 写出={n_written} 异常={n_error}'
+    )
     if run_cmd:
         summary += f' sox成功={n_sox_ok} sox失败={n_sox_fail}'
     else:
