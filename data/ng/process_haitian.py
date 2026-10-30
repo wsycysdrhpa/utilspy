@@ -6,6 +6,7 @@ import argparse
 import re
 import json
 import subprocess
+from tqdm import tqdm
 
 
 re_useless_char_pattern = r'[^A-Za-z0-9\s]+'
@@ -43,10 +44,11 @@ for batch in batchs:
     if not os.path.exists(out_seg_dir):
         os.makedirs(out_seg_dir)
 
+    src_files = sorted(glob(join(src_dir, '*.txt')))
     with codecs.open(out_file_wav, 'w') as out_file_wav_fp, \
         codecs.open(out_file_text, 'w') as out_file_text_fp, \
         codecs.open(out_file_json, 'w') as out_file_json_fp:
-        for src_file in sorted(glob(join(src_dir, '*.txt'))):
+        for src_file in tqdm(src_files, desc=batch, unit='file'):
             with codecs.open(src_file, 'r') as src_fp:
                 lines = src_fp.readlines()
                 file_prefix = os.path.basename(src_file)[:-4]
@@ -98,6 +100,6 @@ for batch in batchs:
                         out_file_json_fp.write("%s\n" % (str_data))
 
                     except Exception as e:
-                        print(e, line)
+                        tqdm.write(f'{e} {line}')
 
                 # break
