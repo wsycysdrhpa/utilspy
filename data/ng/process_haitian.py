@@ -2,6 +2,7 @@ import os
 import codecs
 from glob import glob
 from os.path import join
+import argparse
 import re
 import json
 import subprocess
@@ -11,6 +12,12 @@ re_useless_char_pattern = r'[^A-Za-z0-9\s]+'
 
 re_useless_char = re.compile(re_useless_char_pattern, flags=re.U)
 re_muti_space = re.compile(r'\s+', flags=re.U)
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--run-cmd', action='store_true', help='执行 sox 切分音频')
+args = parser.parse_args()
+run_cmd = args.run_cmd
 
 
 root_dir = '/work/data/asr/ng/nigerian_pidgin/speechocean/speechocean-annot/collection/2026'
@@ -76,8 +83,9 @@ for batch in batchs:
 
                         out_wav_file = "{}/{}_{}_{}.wav".format(out_seg_dir, file_prefix, start, end)
                         cmd = "sox {} {} trim {} {}".format(src_audio_path, out_wav_file, start, round(float(end)-float(start), 2))
-                        # print(cmd)
-                        # _, _  = subprocess.getstatusoutput(cmd)
+                        if run_cmd:
+                            # print(cmd)
+                            _, _ = subprocess.getstatusoutput(cmd)
 
                         wav_scp_key = '%s_%s_%s' % (file_prefix, start, end)
                         out_file_wav_fp.write("%s %s\n" % (wav_scp_key, out_wav_file))
