@@ -45,6 +45,14 @@ for batch in batchs:
         os.makedirs(out_seg_dir)
 
     src_files = sorted(glob(join(src_dir, '*.txt')))
+    n_total = 0
+    n_filtered = 0
+    n_written = 0
+    n_sox_ok = 0
+    n_sox_fail = 0
+    n_error = 0
+    sox_fail_shown = 0
+
     with codecs.open(out_file_wav, 'w') as out_file_wav_fp, \
         codecs.open(out_file_text, 'w') as out_file_text_fp, \
         codecs.open(out_file_json, 'w') as out_file_json_fp:
@@ -55,6 +63,7 @@ for batch in batchs:
                 src_audio_path = join(src_audio_dir, file_prefix + src_audio_postfix)
                 # skip header
                 for line in lines[1:]:
+                    n_total += 1
                     try:
                         line = line.strip()
                         time_span, role, text = line.split('\t')
@@ -68,6 +77,7 @@ for batch in batchs:
                             text == 'TTS' or
                             text == 'Silence' or
                             text == 'BackgroundSpeech'):
+                            n_filtered += 1
                             continue
 
                         text = re_useless_char.sub(" ", text)
@@ -86,8 +96,14 @@ for batch in batchs:
                         out_wav_file = "{}/{}_{}_{}.wav".format(out_seg_dir, file_prefix, start, end)
                         cmd = "sox {} {} trim {} {}".format(src_audio_path, out_wav_file, start, round(float(end)-float(start), 2))
                         if run_cmd:
-                            # print(cmd)
-                            _, _ = subprocess.getstatusoutput(cmd)
+                            status, output = subprocess.getstatusoutput(cmd)
+                            if status != 0:
+                                n_sox_fail += 1
+                                if sox_fail_shown < 10:
+                                    tqdm.write(f'sox failed ({status}): {cmd}\n{output}')
+                                    sox_fail_shown += 1
+                            else:
+                                n_sox_ok += 1
 
                         wav_scp_key = '%s_%s_%s' % (file_prefix, start, end)
                         out_file_wav_fp.write("%s %s\n" % (wav_scp_key, out_wav_file))
@@ -98,8 +114,17 @@ for batch in batchs:
                                     "role": role}
                         str_data = json.dumps(json_data, ensure_ascii=False)
                         out_file_json_fp.write("%s\n" % (str_data))
+                        n_written += 1
 
                     except Exception as e:
+                        n_error += 1
                         tqdm.write(f'{e} {line}')
 
                 # break
+
+    summary = f'[{batch}] 标注行数={n_total} 过滤={n_filtered} 写出={n_written} 异常={n_error}'
+    if run_cmd:
+        summary += f' sox成功={n_sox_ok} sox失败={n_sox_fail}'
+    else:
+        summary += ' (未执行sox, 加 --run-cmd 切分音频)'
+    print(summary)
