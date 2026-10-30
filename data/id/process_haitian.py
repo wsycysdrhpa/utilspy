@@ -7,10 +7,10 @@ import json
 import subprocess
 
 
-re_useless_char_pattern = f'[^A-Za-z0-9\s]+'
+re_useless_char_pattern = r'[^A-Za-z0-9\s]+'
 
 re_useless_char = re.compile(re_useless_char_pattern, flags=re.U)
-re_muti_space = re.compile("\s+", flags=re.U)
+re_muti_space = re.compile(r'\s+', flags=re.U)
 
 
 root_dir = '/workspace/haipeng/haipeng/work/data/indonesia/asr/speechocean/speechocean-annot/marketing'
