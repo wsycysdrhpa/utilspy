@@ -10,7 +10,7 @@ def main():
     parser.add_argument("--dst_file", type=str, required=True,
                         help="Output jsonlines file")
     parser.add_argument("--dup_num", type=int, default=3,
-                        help="Number of duplicates for each sample (default: 6)")
+                        help="Number of duplicates for each sample (default: 3)")
 
     args = parser.parse_args()
 

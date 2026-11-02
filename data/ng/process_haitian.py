@@ -9,10 +9,40 @@ import subprocess
 from tqdm import tqdm
 
 
-re_useless_char_pattern = r'[^A-Za-z0-9\s]+'
+# 字母、数字、空白，以及词内撇号(I'm/don't)
+re_useless_char_pattern = r"[^A-Za-z0-9\s']+"
 
 re_useless_char = re.compile(re_useless_char_pattern, flags=re.U)
 re_muti_space = re.compile(r'\s+', flags=re.U)
+# 非词内的孤立撇号（如引号）
+re_dangling_apos = re.compile(r"(?<![A-Za-z0-9])'|'(?![A-Za-z0-9])")
+
+APOSTROPHE_MAP = {
+    '\u2018': "'",  # ‘
+    '\u2019': "'",  # ’
+    '\u201A': "'",  # ‚
+    '\u2032': "'",  # ′
+    '\u02BC': "'",  # ʼ
+    '\uFF07': "'",  # ＇
+    '`': "'",
+    '´': "'",
+}
+
+
+def normalize_apostrophes(text):
+    for src, dst in APOSTROPHE_MAP.items():
+        text = text.replace(src, dst)
+    return text
+
+
+def clean_text(text):
+    """清洗文本：去掉无用标点（含连字符），保留 I'm、don't 这类词内撇号。"""
+    text = normalize_apostrophes(text)
+    text = re_useless_char.sub(" ", text)
+    text = re_dangling_apos.sub(" ", text)
+    text = re_muti_space.sub(" ", text)
+    text = text.upper()
+    return text.strip()
 
 
 def is_header_line(line):
@@ -115,10 +145,7 @@ for batch in batchs:
                             n_filtered += 1
                             continue
 
-                        text = re_useless_char.sub(" ", text)
-                        text = re_muti_space.sub(" ", text)
-                        text = text.upper()
-                        text = text.strip()
+                        text = clean_text(text)
 
                         time_span = time_span.strip()
                         time_span = time_span.strip('[').strip(']').strip()
