@@ -1,18 +1,29 @@
 import jsonlines
+import argparse
 
 
-in_file = '/home/haipeng/work/data/urdu/asr/speechocean/speechocean-annot/batch_1_10h/merged_10h/data.list'
-dst_file = '/home/haipeng/work/data/urdu/asr/speechocean/speechocean-annot/batch_1_10h/merged_10h/data.list.dup6'
-dup_num = 6
+def main():
+    parser = argparse.ArgumentParser(description="Duplicate jsonlines data")
 
-# in_file = '/workspace/hongjie/work/wenet/examples/urdu/s0/data/pak_8k_wiz_annot_20230217/data.list'
-# dst_file = '/workspace/hongjie/work/wenet/examples/urdu/s0/data/pak_8k_wiz_annot_20230217/data.list.dup6'
-# dup_num = 6
+    parser.add_argument("--in_file", type=str, required=True,
+                        help="Input jsonlines file")
+    parser.add_argument("--dst_file", type=str, required=True,
+                        help="Output jsonlines file")
+    parser.add_argument("--dup_num", type=int, default=3,
+                        help="Number of duplicates for each sample (default: 6)")
 
-with jsonlines.open(in_file, "r") as src_fp, \
-    jsonlines.open(dst_file, 'w') as dst_fp:
-    for line in src_fp:
-        for i in range(dup_num):
-            res = line.copy()
-            res['key'] = "%s_%s_%s" % (line['key'], 'duplicates', i)
-            dst_fp.write(res)
+    args = parser.parse_args()
+
+    with jsonlines.open(args.in_file, "r") as src_fp, \
+            jsonlines.open(args.dst_file, "w") as dst_fp:
+        for line in src_fp:
+            for i in range(args.dup_num):
+                res = line.copy()
+                res["key"] = "%s_%s_%s" % (
+                    line["key"], "duplicates", i
+                )
+                dst_fp.write(res)
+
+
+if __name__ == "__main__":
+    main()
