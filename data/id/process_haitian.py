@@ -1,8 +1,8 @@
 """
-python data/ng/process_haitian.py \
+python data/id/process_haitian.py \
   --root-dir /work/haipeng/work/data/asr/id/speechocean/speechocean-annot/marketing/2026 \
   --batchs vad_output_id_marketing_20260920_ch0_44h \
-  --src-audio-dir /work/haipeng/work/business/ng/collection/audio_to_label/20260908/vad_output_ng_collection_20260908_ch1_30h
+  --src-audio-dir /work/haipeng/work/data/asr/id/speechocean/speechocean-annot/marketing/2026/to_label/vad_output_id_marketing_20260920_ch0_44h_delivery_20261023_30h
 """
 
 
