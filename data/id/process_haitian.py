@@ -1,3 +1,11 @@
+"""
+python data/ng/process_haitian.py \
+  --root-dir /work/haipeng/work/data/asr/id/speechocean/speechocean-annot/marketing/2026 \
+  --batchs vad_output_id_marketing_20260920_ch0_44h \
+  --src-audio-dir /work/haipeng/work/business/ng/collection/audio_to_label/20260908/vad_output_ng_collection_20260908_ch1_30h
+"""
+
+
 import os
 import codecs
 from glob import glob
@@ -13,6 +21,14 @@ re_useless_char_pattern = r'[^A-Za-z0-9\s]+'
 
 re_useless_char = re.compile(re_useless_char_pattern, flags=re.U)
 re_muti_space = re.compile(r'\s+', flags=re.U)
+
+
+def clean_text(text):
+    """清洗文本：去掉标点（含撇号、连字符），只保留字母、数字和空白。"""
+    text = re_useless_char.sub(" ", text)
+    text = re_muti_space.sub(" ", text)
+    text = text.upper()
+    return text.strip()
 
 
 def is_header_line(line):
@@ -33,28 +49,19 @@ def is_header_line(line):
 
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--root-dir', required=True, help='标注根目录，其下每个 batch 含 valid/')
+parser.add_argument('--batchs', nargs='+', required=True, help='一个或多个 batch 目录名')
+parser.add_argument('--src-audio-dir', required=True, help='原始音频目录')
 parser.add_argument('--run-cmd', action='store_true', help='执行 sox 切分音频')
 args = parser.parse_args()
 run_cmd = args.run_cmd
+root_dir = args.root_dir
+batchs = args.batchs
+src_audio_dir = args.src_audio_dir
 
-
-root_dir = '/workspace/haipeng/haipeng/work/data/indonesia/asr/speechocean/speechocean-annot/marketing'
-batchs = [
-          'batch_1_marketing_4.96h',
-          'batch_2_marketing_10.3h',
-          'batch_3_marketing_7.28h',
-        #   'batch_4_marketing_14.74h',
-        ]
 
 for batch in batchs:
     src_dir = join(root_dir, batch, 'valid')
-
-    # 2023 batch 1-15
-    # src_audio_dir = '/home/yangsen/data/asr/speechocean/speechocean-annot/indonesia/{}/wav'.format(batch)
-    # 2024 batch 1-3
-    src_audio_dir = '/workspace/haipeng/haipeng/work/data/indonesia/asr/to_label/marketing_20240603-20240603/audio_left_seged'
-    # 2024 batch 4
-    # src_audio_dir = '/workspace/haipeng/haipeng/work/data/indonesia/asr/to_label/voicemail/0629_5-10s_10k/audio_left'
 
     src_audio_postfix = '.wav'
 
@@ -120,10 +127,7 @@ for batch in batchs:
                             n_filtered += 1
                             continue
 
-                        text = re_useless_char.sub(" ", text)
-                        text = re_muti_space.sub(" ", text)
-                        text = text.upper()
-                        text = text.strip()
+                        text = clean_text(text)
 
                         time_span = time_span.strip()
                         time_span = time_span.strip('[').strip(']').strip()

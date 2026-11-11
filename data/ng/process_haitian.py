@@ -1,3 +1,11 @@
+"""
+python data/ng/process_haitian.py \
+  --root-dir /work/data/asr/ng/nigerian_pidgin/speechocean/speechocean-annot/collection/2026 \
+  --batchs vad_output_ng_collection_20260908_ch1_30h_delivery_20260924_19h \
+  --src-audio-dir /work/haipeng/work/business/ng/collection/audio_to_label/20260908/vad_output_ng_collection_20260908_ch1_30h
+"""
+
+
 import os
 import codecs
 from glob import glob
@@ -63,23 +71,19 @@ def is_header_line(line):
 
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--root-dir', required=True, help='标注根目录，其下每个 batch 含 valid/')
+parser.add_argument('--batchs', nargs='+', required=True, help='一个或多个 batch 目录名')
+parser.add_argument('--src-audio-dir', required=True, help='原始音频目录')
 parser.add_argument('--run-cmd', action='store_true', help='执行 sox 切分音频')
 args = parser.parse_args()
 run_cmd = args.run_cmd
+root_dir = args.root_dir
+batchs = args.batchs
+src_audio_dir = args.src_audio_dir
 
-
-root_dir = '/work/data/asr/ng/nigerian_pidgin/speechocean/speechocean-annot/collection/2026'
-batchs = [
-          'vad_output_ng_collection_20260908_ch1_30h_delivery_20260924_19h',
-          # 'vad_output_ng_collection_20260929_ch1_55h_delivery_20261015_38h',
-        ]
 
 for batch in batchs:
     src_dir = join(root_dir, batch, 'valid')
-
-    # 2026 collection
-    src_audio_dir = '/work/haipeng/work/business/ng/collection/audio_to_label/20260908/vad_output_ng_collection_20260908_ch1_30h'
-    # src_audio_dir = '/work/haipeng/work/business/ng/collection/audio_to_label/20260929/vad_output_ng_collection_20260929_ch1_55h'
 
     src_audio_postfix = '.wav'
 
