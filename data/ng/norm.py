@@ -4,6 +4,8 @@ import sys
 
 
 re_muti_space = re.compile(r'\s+', flags=re.U)
+re_unk = re.compile(r'<unk>', flags=re.IGNORECASE)
+UNK_PLACEHOLDER = 'UNKPLACEHOLDER'
 
 APOSTROPHE_MAP = {
     '\u2018': "'",
@@ -307,6 +309,7 @@ def map_filler(token):
 
 
 def normalize_text(text):
+    text = re_unk.sub(UNK_PLACEHOLDER, text)
     text = normalize_apostrophes(text)
     text = text.upper()
     tokens = text.split()
@@ -315,7 +318,7 @@ def normalize_text(text):
         for part in expand_token(token).split():
             for variant in map_variant(part).split():
                 expanded.extend(map_filler(variant).split())
-    return ' '.join(expanded)
+    return ' '.join(expanded).replace(UNK_PLACEHOLDER, '<unk>')
 
 
 def split_key_text(line):

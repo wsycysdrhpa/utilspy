@@ -5,6 +5,8 @@ import sys
 
 re_useless_char = re.compile(r'[^A-Za-z0-9\s]+', flags=re.U)
 re_muti_space = re.compile(r'\s+', flags=re.U)
+re_unk = re.compile(r'<unk>', flags=re.IGNORECASE)
+UNK_PLACEHOLDER = 'UNKPLACEHOLDER'
 
 # 先处理整词会拆错的短语。PAPA 单独出现时是称呼，不能改。
 PHRASE_PATTERNS = (
@@ -171,6 +173,7 @@ def map_token(token):
 
 
 def normalize_text(text):
+    text = re_unk.sub(UNK_PLACEHOLDER, text)
     text = text.upper()
     text = re_useless_char.sub(" ", text)
     text = re_muti_space.sub(" ", text).strip()
@@ -178,7 +181,7 @@ def normalize_text(text):
     expanded = []
     for token in text.split():
         expanded.extend(map_token(token))
-    return ' '.join(expanded)
+    return ' '.join(expanded).replace(UNK_PLACEHOLDER, '<unk>')
 
 
 def split_key_text(line):
